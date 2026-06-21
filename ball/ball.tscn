@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c1dn0tadeo3xi"]
 
 [ext_resource type="Script" uid="uid://xh6iytbx0nkl" path="res://ball/ball.gd" id="1_x8fbi"]
-[ext_resource type="Script" uid="uid://ceaixy3h86plh" path="res://ball/ball_visual.gd" id="2_41u45"]
-[ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/ball_movement.gd" id="3_ktgx5"]
+[ext_resource type="Script" uid="uid://ceaixy3h86plh" path="res://ball/visual.gd" id="2_41u45"]
+[ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/movement.gd" id="3_ktgx5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktgx5"]
 radius = 20.0
@@ -13,8 +13,8 @@ script = ExtResource("1_x8fbi")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=626301878]
 shape = SubResource("CircleShape2D_ktgx5")
 
-[node name="BallVisual" type="Node2D" parent="." unique_id=1145665496]
+[node name="Visual" type="Node2D" parent="." unique_id=1145665496]
 script = ExtResource("2_41u45")
 
-[node name="BallMovement" type="Node" parent="." unique_id=1298670590]
+[node name="Movement" type="Node" parent="." unique_id=1298670590]
 script = ExtResource("3_ktgx5")
