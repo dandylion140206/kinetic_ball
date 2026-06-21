@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://7ac4uyti5bqf"]
 
-[ext_resource type="Script" uid="uid://l33sgmhuqs3y" path="res://cursor.gd" id="1_5l68f"]
-[ext_resource type="Script" uid="uid://bfqc37ehhef20" path="res://cursor_visual.gd" id="1_fsq4c"]
+[ext_resource type="Script" uid="uid://l33sgmhuqs3y" path="res://cursor/cursor.gd" id="1_5l68f"]
+[ext_resource type="Script" uid="uid://bfqc37ehhef20" path="res://cursor/cursor_visual.gd" id="1_fsq4c"]
 
 [node name="Cursor" type="Node2D" unique_id=801136573]
 script = ExtResource("1_5l68f")

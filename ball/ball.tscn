@@ -1,14 +1,21 @@
 [gd_scene format=3 uid="uid://c1dn0tadeo3xi"]
 
 [ext_resource type="Script" uid="uid://xh6iytbx0nkl" path="res://ball/ball.gd" id="1_x8fbi"]
+[ext_resource type="Script" uid="uid://j17m4fgej58w" path="res://ball/movement_stats.gd" id="2_6xd6y"]
 [ext_resource type="Script" uid="uid://ceaixy3h86plh" path="res://ball/visual.gd" id="2_41u45"]
 [ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/movement.gd" id="3_ktgx5"]
+[ext_resource type="Script" uid="uid://yivvirrfwbk4" path="res://ball/boost.gd" id="5_0p2w7"]
+
+[sub_resource type="Resource" id="Resource_0p2w7"]
+script = ExtResource("2_6xd6y")
+metadata/_custom_type_script = "uid://j17m4fgej58w"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktgx5"]
 radius = 20.0
 
 [node name="Ball" type="Area2D" unique_id=452373054]
 script = ExtResource("1_x8fbi")
+movement_stats = SubResource("Resource_0p2w7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=626301878]
 shape = SubResource("CircleShape2D_ktgx5")
@@ -18,3 +25,13 @@ script = ExtResource("2_41u45")
 
 [node name="Movement" type="Node" parent="." unique_id=1298670590]
 script = ExtResource("3_ktgx5")
+
+[node name="Boost" type="Node" parent="." unique_id=645992355]
+script = ExtResource("5_0p2w7")
+duration = 0.15
+
+[node name="DurationTimer" type="Timer" parent="Boost" unique_id=1770720419]
+one_shot = true
+
+[node name="CooldownTimer" type="Timer" parent="Boost" unique_id=495570790]
+one_shot = true

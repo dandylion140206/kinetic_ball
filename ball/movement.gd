@@ -2,22 +2,29 @@ class_name Movement
 extends Node
 
 
-@export_range(5000, 30000, 100) var acceleration: int = 10000
-@export_range(1000, 10000, 100) var target_speed: int = 5000
-@export_range(1000, 20000, 100) var max_speed: int = 10000
-
-var velocity := Vector2.ZERO
-
-
-func update_velocity(
+func calculate_velocity(
+	current_velocity: Vector2,
 	current_position: Vector2,
 	target_position: Vector2,
-	delta: float
+	movement_stats: MovementStats,
+	delta: float,
+	target_speed_multiplier: float = 1.0,
+	acceleration_multiplier: float = 1.0,
+	max_speed_multiplier: float = 1.0
 ) -> Vector2:
-	var dir := (target_position - current_position).normalized()
-	var desired_velocity := dir * target_speed
+	var direction := (target_position - current_position).normalized()
 
-	velocity = velocity.move_toward(desired_velocity, acceleration * delta)
-	velocity = velocity.limit_length(max_speed)
+	var target_speed := movement_stats.target_speed * target_speed_multiplier
+	var acceleration := movement_stats.acceleration * acceleration_multiplier
+	var max_speed := movement_stats.max_speed * max_speed_multiplier
 
-	return velocity
+	var desired_velocity := direction * target_speed
+
+	var new_velocity := current_velocity.move_toward(
+		desired_velocity,
+		acceleration * delta
+	)
+
+	new_velocity = new_velocity.limit_length(max_speed)
+
+	return new_velocity
