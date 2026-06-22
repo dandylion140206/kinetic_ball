@@ -28,8 +28,8 @@ script = ExtResource("3_ktgx5")
 
 [node name="Boost" type="Node" parent="." unique_id=645992355]
 script = ExtResource("5_0p2w7")
-duration = 0.2
-cooldown = 0.0
+timed_fade_power = 0.7
+duration = 0.3
 
 [node name="DurationTimer" type="Timer" parent="Boost" unique_id=1770720419]
 one_shot = true

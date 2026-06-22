@@ -4,16 +4,22 @@ extends Control
 @export var max_samples := 240
 @export var max_value := 5000.0
 @export var line_color := Color.LIME
+@export var boost_line_color := Color.YELLOW
 
 var current_value := 0.0
 var values: Array[float] = []
+var boost_states: Array[bool] = []
 
-func add_value(value: float) -> void:
+
+func add_value(value: float, is_boost_active: bool = false) -> void:
 	current_value = value
+
 	values.append(value)
+	boost_states.append(is_boost_active)
 
 	if values.size() > max_samples:
 		values.pop_front()
+		boost_states.pop_front()
 
 	queue_redraw()
 
@@ -31,12 +37,19 @@ func _draw() -> void:
 		var y1: float = size.y - clamp(values[i] / max_value, 0.0, 1.0) * size.y
 		var y2: float = size.y - clamp(values[i + 1] / max_value, 0.0, 1.0) * size.y
 
+		var segment_color := line_color
+		if boost_states[i] or boost_states[i + 1]:
+			segment_color = boost_line_color
 
-		draw_line(Vector2(x1, y1), Vector2(x2, y2), line_color, 2.0)
-
+		draw_line(
+			Vector2(x1, y1),
+			Vector2(x2, y2),
+			segment_color,
+			2.0
+		)
 
 	var display_speed := int(current_value / 100.0) * 100
-	
+
 	draw_string(
 		ThemeDB.fallback_font,
 		Vector2(0, size.y + 20),
