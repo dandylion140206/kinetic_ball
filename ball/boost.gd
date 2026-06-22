@@ -7,8 +7,8 @@ extends Node
 @export_range(0.0, 2.0, 0.02) var cooldown: float = 0.6
 
 @export_group("Stat Modifier Boost")
-@export_range(1.0, 3.0, 0.05) var target_speed_multiplier: float = 1.8
-@export_range(1.0, 3.0, 0.05) var acceleration_multiplier: float = 1.8
+@export_range(1.0, 5.0, 0.05) var target_speed_multiplier: float = 2.0
+@export_range(1.0, 5.0, 0.05) var acceleration_multiplier: float = 2.0
 @export_range(1.0, 3.0, 0.05) var max_speed_multiplier: float = 1.0
 
 @onready var duration_timer: Timer = $DurationTimer
