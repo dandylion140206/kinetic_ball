@@ -1,27 +1,25 @@
 extends Area2D
 
+
 # デバッグ用
-signal speed_updated(speed: float, is_boost_active: bool)
+signal speed_updated(speed: float)
 
 @export var movement_stats: MovementStats
 
 @onready var movement: Movement = $Movement
 @onready var boost: Boost = $Boost
-@onready var visual: Visual = $Visual
 
 var velocity: Vector2 = Vector2.ZERO
 
 
 func _process(delta: float) -> void:
 	var target_position := get_global_mouse_position()
+	var cursor_direction := _get_cursor_direction(target_position)
 
-	boost.update_input(
-		Input.is_action_pressed("primary_action"),
-		Input.is_action_just_pressed("primary_action"),
-		velocity
-	)
+	if Input.is_action_just_pressed("primary_action"):
+		var impulse := boost.try_activate(velocity)
 
-	visual.set_boost_active(boost.is_active())
+		velocity += impulse
 
 	velocity = movement.calculate_velocity(
 		velocity,
@@ -31,9 +29,16 @@ func _process(delta: float) -> void:
 		delta
 	)
 
-	var final_velocity := boost.apply_velocity_boost(velocity)
-
-	global_position += final_velocity * delta
+	global_position += velocity * delta
 
 	# デバッグ用
-	speed_updated.emit(final_velocity.length(), boost.is_active())
+	speed_updated.emit(velocity.length())
+
+
+func _get_cursor_direction(target_position: Vector2) -> Vector2:
+	var to_target := target_position - global_position
+
+	if to_target.length_squared() <= 0.0001:
+		return Vector2.ZERO
+
+	return to_target.normalized()
