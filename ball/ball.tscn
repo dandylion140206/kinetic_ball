@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c1dn0tadeo3xi"]
 
-[ext_resource type="Script" uid="uid://xh6iytbx0nkl" path="res://ball/ball.gd" id="1_x8fbi"]
+[ext_resource type="Script" uid="uid://b67k0qxvqkn41" path="res://ball/ball.gd" id="1_x8fbi"]
 [ext_resource type="Script" uid="uid://j17m4fgej58w" path="res://ball/movement_stats.gd" id="2_6xd6y"]
 [ext_resource type="Script" uid="uid://ceaixy3h86plh" path="res://ball/visual.gd" id="2_41u45"]
 [ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/movement.gd" id="3_ktgx5"]
@@ -25,7 +25,6 @@ script = ExtResource("2_41u45")
 
 [node name="Movement" type="Node" parent="." unique_id=1298670590]
 script = ExtResource("3_ktgx5")
-velocity_response = 2.5
 
 [node name="Boost" type="Node" parent="." unique_id=645992355]
 script = ExtResource("5_0p2w7")
