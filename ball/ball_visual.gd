@@ -1,4 +1,4 @@
-class_name Visual
+class_name BallVisual
 extends Node2D
 
 

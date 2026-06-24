@@ -8,8 +8,14 @@ signal speed_updated(speed: float)
 
 @onready var movement: Movement = $Movement
 @onready var boost: Boost = $Boost
+@onready var damage_dealer: DamageDealer = $DamageDealer
 
 var velocity: Vector2 = Vector2.ZERO
+
+
+func _ready() -> void:
+	area_entered.connect(_on_area_entered)
+	body_entered.connect(_on_body_entered)
 
 
 func _process(delta: float) -> void:
@@ -31,3 +37,19 @@ func _process(delta: float) -> void:
 
 	# デバッグ用
 	speed_updated.emit(velocity.length())
+
+
+func _on_area_entered(area: Area2D) -> void:
+	damage_dealer.try_deal_damage(
+		area,
+		self,
+		velocity
+	)
+
+
+func _on_body_entered(body: Node2D) -> void:
+	damage_dealer.try_deal_damage(
+		body,
+		self,
+		velocity
+	)

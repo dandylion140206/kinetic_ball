@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://v410y1roi8sv"
+path="res://.godot/imported/DSGNTonl_SKILL RELEASE-Tiny Energy Sphere_HY_PC-001.wav-3759269ec6e1a5c07fddc1dc19808328.sample"
+
+[deps]
+
+source_file="res://assets/sfx/ブースト/DSGNTonl_SKILL RELEASE-Tiny Energy Sphere_HY_PC-001.wav"
+dest_files=["res://.godot/imported/DSGNTonl_SKILL RELEASE-Tiny Energy Sphere_HY_PC-001.wav-3759269ec6e1a5c07fddc1dc19808328.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

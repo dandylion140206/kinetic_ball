@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://db4dp6n086j22"]
+
+[ext_resource type="Script" uid="uid://dux5lc45m8t8h" path="res://target/target.gd" id="1_sp8cc"]
+[ext_resource type="Script" uid="uid://b27iur02l1su8" path="res://target_visual.gd" id="2_itqbd"]
+[ext_resource type="Script" uid="uid://c43si4dbixk67" path="res://target/health.gd" id="3_6nu6o"]
+[ext_resource type="Script" uid="uid://xbohl13qx7pb" path="res://target/health_bar.gd" id="4_itqbd"]
+[ext_resource type="Script" uid="uid://c44vcmo5b7yyd" path="res://sound_player.gd" id="5_6nu6o"]
+[ext_resource type="AudioStream" uid="uid://ckij85u0fgpio" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="6_q5yam"]
+[ext_resource type="AudioStream" uid="uid://c2krkxiq0mr3k" path="res://assets/sfx/消滅/DSGNMisc_HIT-Fleeting Hit_HY_PC-002.wav" id="7_q5yam"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
+radius = 40.0
+
+[node name="Target" type="Area2D" unique_id=1615033435]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_sp8cc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=697718227]
+shape = SubResource("CircleShape2D_ua4af")
+
+[node name="TargetVisual" type="Node2D" parent="." unique_id=1819522405]
+script = ExtResource("2_itqbd")
+
+[node name="Health" type="Node" parent="." unique_id=1435787681]
+script = ExtResource("3_6nu6o")
+
+[node name="HealthBar" type="Node2D" parent="." unique_id=1578914099]
+position = Vector2(0, -52.6)
+script = ExtResource("4_itqbd")
+
+[node name="HitSoundPlayer" type="Node" parent="." unique_id=1108541957]
+script = ExtResource("5_6nu6o")
+sound = ExtResource("6_q5yam")
+
+[node name="DestroySoundPlayer" type="Node" parent="." unique_id=1298699992]
+script = ExtResource("5_6nu6o")
+sound = ExtResource("7_q5yam")
+volume_db = -1.8999999999999986
+pitch_min = 0.94
+pitch_max = 1.06
