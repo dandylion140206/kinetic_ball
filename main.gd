@@ -1,7 +1,14 @@
 extends Node
 
+
+@onready var ball: Ball = $Ball
+@onready var speed_graph: SpeedGraph = $CanvasLayer/SpeedGraph
+@onready var vfx_layer: VFXSpawner = $VFXLayer
+
+
 func _ready() -> void:
-	$Ball.speed_updated.connect($CanvasLayer/SpeedGraph.add_value)
+	ball.speed_updated.connect(speed_graph.add_value)
+	ball.boost_activated.connect(vfx_layer.spawn_boost_smoke)
 
 func _process(delta: float) -> void:
 	# デバッグ用: ゲームスピードを遅くする

@@ -1,50 +1,46 @@
 class_name HealthBar
 extends Node2D
 
+@export_range(10.0, 200.0, 1.0) var bar_width: float = 50.0
+@export_range(2.0, 30.0, 1.0) var bar_height: float = 6.0
 
-@export var bar_width: float = 55.0
-@export var bar_height: float = 6.0
+@export var background_color: Color = Color(0.0, 0.0, 0.0, 0.6)
+@export var hp_color: Color = Color(0.2, 1.0, 0.3, 1.0)
+@export var border_color: Color = Color.WHITE
 
-@export var background_color: Color = Color(0.0, 0.0, 0.0, 0.7)
-@export var hp_color: Color = Color(0.2, 1.0, 0.2, 1.0)
-@export var border_color: Color = Color(1.0, 1.0, 1.0, 0.8)
-
-var _hp_ratio: float = 1.0
-
+var hp_ratio: float = 1.0
 
 func _ready() -> void:
-	_update_visibility()
-
+	z_index = 100
+	z_as_relative = false
+	visible = false
 
 func set_hp_ratio(value: float) -> void:
-	_hp_ratio = clampf(value, 0.0, 1.0)
-	_update_visibility()
+	hp_ratio = clampf(value, 0.0, 1.0)
+	visible = hp_ratio < 1.0
 	queue_redraw()
 
-
-func _update_visibility() -> void:
-	visible = _hp_ratio < 1.0
-
-
 func _draw() -> void:
-	if _hp_ratio >= 1.0:
+	if not visible:
 		return
 
-	var top_left := Vector2(
-		-bar_width * 0.5,
-		-bar_height * 0.5
+	var top_left := Vector2(-bar_width * 0.5, -bar_height * 0.5)
+
+	draw_rect(
+		Rect2(top_left, Vector2(bar_width, bar_height)),
+		background_color,
+		true
 	)
 
-	var background_rect := Rect2(
-		top_left,
-		Vector2(bar_width, bar_height)
+	draw_rect(
+		Rect2(top_left, Vector2(bar_width * hp_ratio, bar_height)),
+		hp_color,
+		true
 	)
 
-	var hp_rect := Rect2(
-		top_left,
-		Vector2(bar_width * _hp_ratio, bar_height)
+	draw_rect(
+		Rect2(top_left, Vector2(bar_width, bar_height)),
+		border_color,
+		false,
+		1.0
 	)
-
-	draw_rect(background_rect, background_color, true)
-	draw_rect(hp_rect, hp_color, true)
-	draw_rect(background_rect, border_color, false, 1.0)

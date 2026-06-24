@@ -36,6 +36,6 @@ sound = ExtResource("6_q5yam")
 [node name="DestroySoundPlayer" type="Node" parent="." unique_id=1298699992]
 script = ExtResource("5_6nu6o")
 sound = ExtResource("7_q5yam")
-volume_db = -1.8999999999999986
+volume_db = -1.8999999999999984
 pitch_min = 0.94
 pitch_max = 1.06

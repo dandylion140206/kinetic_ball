@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c7mpnvlntsbrn"]
+
+[ext_resource type="Script" uid="uid://ccvmgmic8s0jd" path="res://effects/boost_smoke_effect.gd" id="1_etnyj"]
+
+[node name="BoostSmokeEffect" type="Node2D" unique_id=939616504]
+script = ExtResource("1_etnyj")
+
+[node name="Particles" type="CPUParticles2D" parent="." unique_id=824494506]
+emitting = false
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+randomness = 0.6
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+damping_min = 100.0
+damping_max = 200.0

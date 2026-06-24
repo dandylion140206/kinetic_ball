@@ -1,8 +1,12 @@
+class_name Ball
 extends Area2D
 
 
-# デバッグ用
 signal speed_updated(speed: float)
+signal boost_activated(
+	spawn_position: Vector2,
+	boost_direction: Vector2
+)
 
 @export var movement_stats: MovementStats
 
@@ -31,12 +35,18 @@ func _process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("primary_action"):
 		var impulse := boost.try_activate(velocity)
-		velocity += impulse
+
+		if impulse.length_squared() > 0.0001:
+			velocity += impulse
+			boost_activated.emit(
+				global_position,
+				impulse.normalized()
+			)
 
 	global_position += velocity * delta
 
-	# デバッグ用
 	speed_updated.emit(velocity.length())
+
 
 
 func _on_area_entered(area: Area2D) -> void:
