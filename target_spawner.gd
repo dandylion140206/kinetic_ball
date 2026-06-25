@@ -1,6 +1,7 @@
 class_name TargetSpawner
 extends Node
 
+signal target_spawned(target: Target)
 
 @export var target_scene: PackedScene
 @export var avoid_node: Node2D
@@ -46,6 +47,9 @@ func _spawn_target() -> void:
 	target.destroyed.connect(_on_target_destroyed)
 
 	targets.append(target)
+
+	target_spawned.emit(target)
+
 
 
 func _on_target_destroyed(target: Target) -> void:

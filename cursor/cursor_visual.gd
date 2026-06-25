@@ -1,6 +1,5 @@
 extends Node2D
 
-
 @export var radius: float = 8.0
 @export var color: Color = Color(0.9, 0.9, 0.3, 1.0)
 

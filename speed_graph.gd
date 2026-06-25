@@ -1,7 +1,6 @@
 class_name SpeedGraph
 extends Control
 
-
 @export var max_samples := 240
 @export var max_value := 7000.0
 @export var line_color := Color.LIME

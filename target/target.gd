@@ -1,13 +1,12 @@
 class_name Target
 extends Area2D
 
-
 signal destroyed(target: Target)
+signal health_ratio_changed(target: Target, hp_ratio: float)
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var visual: TargetVisual = $TargetVisual
 @onready var health: Health = $Health
-@onready var health_bar: HealthBar = $HealthBar
 @onready var hit_sound_player: SoundPlayer = $HitSoundPlayer
 @onready var destroy_sound_player: SoundPlayer = $DestroySoundPlayer
 
@@ -16,7 +15,7 @@ func _ready() -> void:
 	health.damaged.connect(_on_health_damaged)
 	health.died.connect(_on_health_died)
 
-	health_bar.set_hp_ratio(health.get_hp_ratio())
+	health_ratio_changed.emit(self, health.get_hp_ratio())
 
 
 func take_damage(damage_info: Dictionary) -> void:
@@ -30,6 +29,10 @@ func take_damage(damage_info: Dictionary) -> void:
 
 func get_target_radius() -> float:
 	return visual.radius
+
+
+func get_hp_ratio() -> float:
+	return health.get_hp_ratio()
 
 
 func _get_damage_amount(damage_info: Dictionary) -> float:
@@ -49,17 +52,15 @@ func _on_health_damaged(
 	visual.set_hp_ratio(hp_ratio)
 	visual.flash_damage()
 
-	health_bar.set_hp_ratio(hp_ratio)
+	health_ratio_changed.emit(self, hp_ratio)
 
 	if current_hp > 0.0:
 		hit_sound_player.play_at(global_position)
 
 
 func _on_health_died() -> void:
-	# 破壊音
 	destroy_sound_player.play_at(global_position)
 
-	# 二重ヒット防止
 	monitoring = false
 	monitorable = false
 	collision_shape.disabled = true

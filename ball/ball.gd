@@ -1,13 +1,11 @@
 class_name Ball
 extends Area2D
 
-
 signal speed_updated(speed: float)
 signal boost_activated(
 	follow_node: Node2D,
 	boost_direction: Vector2
 )
-
 
 @export var movement_stats: MovementStats
 
@@ -23,7 +21,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var target_position := get_global_mouse_position()
 
 	velocity = movement.calculate_velocity(
@@ -33,6 +31,21 @@ func _process(delta: float) -> void:
 		movement_stats,
 		delta
 	)
+
+	if Input.is_action_just_pressed("primary_action"):
+		var impulse := boost.try_activate(velocity)
+
+		if impulse.length_squared() > 0.0001:
+			velocity += impulse
+			boost_activated.emit(
+				self,
+				impulse.normalized()
+			)
+
+	global_position += velocity * delta
+
+	speed_updated.emit(velocity.length())
+
 
 	if Input.is_action_just_pressed("primary_action"):
 		var impulse := boost.try_activate(velocity)

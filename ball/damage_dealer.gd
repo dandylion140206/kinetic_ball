@@ -1,8 +1,7 @@
 class_name DamageDealer
 extends Node
 
-
-@export_range(0, 5000, 100) var min_damage_speed: int = 1000
+@export_range(0, 5000, 100) var min_damage_speed: int = 500
 @export_range(0, 100, 1) var base_damage: int = 0
 @export_range(0.0, 0.1, 0.001) var speed_damage_scale: float = 0.01
 @export_range(0, 9999, 1) var max_damage: int = 9999

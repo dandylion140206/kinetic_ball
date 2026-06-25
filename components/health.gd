@@ -1,7 +1,6 @@
 class_name Health
 extends Node
 
-
 signal damaged(amount: float, current_hp: float, max_hp: float)
 signal died
 

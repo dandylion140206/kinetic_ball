@@ -1,7 +1,6 @@
 class_name TargetVisual
 extends Node2D
 
-
 @export var radius: float = 40.0
 
 @export var full_hp_color: Color = Color(0.2, 0.7, 1.0, 1.0)

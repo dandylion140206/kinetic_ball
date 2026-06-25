@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://bfhimbix04kqp" path="res://speed_graph.gd" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://b8h5t4d243axg" path="res://target_spawner.gd" id="5_lquwl"]
 [ext_resource type="PackedScene" uid="uid://db4dp6n086j22" path="res://target/target.tscn" id="6_7mycd"]
-[ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://health_bal_layer.gd" id="7_4c57u"]
 [ext_resource type="Script" uid="uid://b2dog2m20x8s3" path="res://vfx_spawner.gd" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://c7mpnvlntsbrn" path="res://effects/boost_smoke_effect.tscn" id="8_5vw27"]
 
@@ -26,9 +25,6 @@ script = ExtResource("5_lquwl")
 target_scene = ExtResource("6_7mycd")
 avoid_node = NodePath("../Ball")
 
-[node name="HealthBarLayer" type="Node2D" parent="." unique_id=1619796642]
-script = ExtResource("7_4c57u")
-
 [node name="Cursor" parent="." unique_id=855206738 instance=ExtResource("1_0xm2m")]
 
 [node name="Ball" parent="." unique_id=452373054 instance=ExtResource("1_ig7tw")]
@@ -43,4 +39,3 @@ offset_top = 15.7
 offset_right = 140.2
 offset_bottom = 96.0
 script = ExtResource("3_h2yge")
-max_value = 6000.0

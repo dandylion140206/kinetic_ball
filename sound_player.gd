@@ -1,7 +1,6 @@
 class_name SoundPlayer
 extends Node
 
-
 @export var sound: AudioStream
 @export var bus_name: StringName = &"SFX"
 

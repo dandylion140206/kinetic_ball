@@ -1,7 +1,6 @@
 class_name Boost
 extends Node
 
-
 @export_range(0, 5000, 100) var impulse_power: int = 1500
 @export_range(0.0, 2.0, 0.02) var cooldown: float = 0.4
 
