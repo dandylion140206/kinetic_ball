@@ -5,11 +5,14 @@ extends Node2D
 
 
 func spawn_boost_smoke(
-	spawn_position: Vector2,
+	follow_node: Node2D,
 	boost_direction: Vector2
 ) -> void:
 	if boost_smoke_scene == null:
 		push_warning("VFXSpawner: boost_smoke_scene is not assigned.")
+		return
+
+	if follow_node == null:
 		return
 
 	if boost_direction.length_squared() <= 0.0001:
@@ -20,7 +23,7 @@ func spawn_boost_smoke(
 	add_child(effect)
 
 	if effect is BoostSmokeEffect:
-		effect.play(spawn_position, boost_direction)
+		effect.play(follow_node, boost_direction)
 	else:
 		push_warning("VFXSpawner: boost_smoke_scene is not BoostSmokeEffect.")
 		effect.queue_free()

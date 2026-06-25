@@ -4,9 +4,10 @@ extends Area2D
 
 signal speed_updated(speed: float)
 signal boost_activated(
-	spawn_position: Vector2,
+	follow_node: Node2D,
 	boost_direction: Vector2
 )
+
 
 @export var movement_stats: MovementStats
 
@@ -39,14 +40,13 @@ func _process(delta: float) -> void:
 		if impulse.length_squared() > 0.0001:
 			velocity += impulse
 			boost_activated.emit(
-				global_position,
+				self,
 				impulse.normalized()
 			)
 
 	global_position += velocity * delta
 
 	speed_updated.emit(velocity.length())
-
 
 
 func _on_area_entered(area: Area2D) -> void:
