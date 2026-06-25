@@ -6,6 +6,7 @@ signal health_ratio_changed(target: Target, hp_ratio: float)
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var visual: TargetVisual = $TargetVisual
+@onready var damage_flash: DamageFlash = $DamageFlash
 @onready var health: Health = $Health
 @onready var hit_sound_player: SoundPlayer = $HitSoundPlayer
 @onready var destroy_sound_player: SoundPlayer = $DestroySoundPlayer
@@ -50,12 +51,13 @@ func _on_health_damaged(
 	var hp_ratio := health.get_hp_ratio()
 
 	visual.set_hp_ratio(hp_ratio)
-	visual.flash_damage()
+	damage_flash.flash()
 
 	health_ratio_changed.emit(self, hp_ratio)
 
 	if current_hp > 0.0:
 		hit_sound_player.play_at(global_position)
+
 
 
 func _on_health_died() -> void:

@@ -9,17 +9,6 @@ var current_value := 0.0
 var values: Array[float] = []
 
 
-func add_value(value: float) -> void:
-	current_value = value
-
-	values.append(value)
-
-	if values.size() > max_samples:
-		values.pop_front()
-
-	queue_redraw()
-
-
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), Color(0, 0, 0, 0.5))
 
@@ -51,3 +40,14 @@ func _draw() -> void:
 		16,
 		Color.WHITE
 	)
+
+
+func add_value(value: float) -> void:
+	current_value = value
+
+	values.append(value)
+
+	if values.size() > max_samples:
+		values.pop_front()
+
+	queue_redraw()

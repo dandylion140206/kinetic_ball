@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://bfhimbix04kqp" path="res://speed_graph.gd" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://b8h5t4d243axg" path="res://target_spawner.gd" id="5_lquwl"]
 [ext_resource type="PackedScene" uid="uid://db4dp6n086j22" path="res://target/target.tscn" id="6_7mycd"]
-[ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://health_bal_layer.gd" id="7_4c57u"]
+[ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://health_bar_layer.gd" id="7_4c57u"]
 [ext_resource type="Script" uid="uid://b2dog2m20x8s3" path="res://vfx_spawner.gd" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://c7mpnvlntsbrn" path="res://effects/boost_smoke_effect.tscn" id="8_5vw27"]
 [ext_resource type="PackedScene" uid="uid://c7spad1eefqnw" path="res://health_bar.tscn" id="8_efxa6"]

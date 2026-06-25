@@ -9,11 +9,11 @@ signal boost_activated(
 
 @export var movement_stats: MovementStats
 
+var velocity: Vector2 = Vector2.ZERO
+
 @onready var movement: Movement = $Movement
 @onready var boost: Boost = $Boost
 @onready var damage_dealer: DamageDealer = $DamageDealer
-
-var velocity: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:

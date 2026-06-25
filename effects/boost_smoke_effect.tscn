@@ -11,12 +11,12 @@ script = ExtResource("1_etnyj")
 
 [node name="Particles" type="CPUParticles2D" parent="." unique_id=824494506]
 emitting = false
-amount = 28
-lifetime = 0.2
+amount = 20
+lifetime = 0.18000000000000002
 randomness = 0.6
 lifetime_randomness = 0.2
 emission_shape = 1
-emission_sphere_radius = 12.0
+emission_sphere_radius = 10.0
 spread = 20.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 100.0

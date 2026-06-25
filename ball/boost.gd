@@ -4,10 +4,10 @@ extends Node
 @export_range(0, 5000, 100) var impulse_power: int = 1500
 @export_range(0.0, 2.0, 0.02) var cooldown: float = 0.4
 
+var _is_on_cooldown: bool = false
+
 @onready var cooldown_timer: Timer = $CooldownTimer
 @onready var boost_sound_player: SoundPlayer = $BoostSoundPlayer
-
-var _is_on_cooldown: bool = false
 
 
 func _ready() -> void:

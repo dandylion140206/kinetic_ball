@@ -9,11 +9,11 @@ extends Node2D
 @export var use_generated_circle_texture: bool = true
 @export_range(8, 128, 1) var circle_texture_size: int = 52
 
-@onready var particles: CPUParticles2D = $Particles
-
 var _follow_node: Node2D
 var _smoke_direction: Vector2 = Vector2.LEFT
 var _is_following: bool = false
+
+@onready var particles: CPUParticles2D = $Particles
 
 
 func _ready() -> void:
@@ -23,6 +23,18 @@ func _ready() -> void:
 	particles.local_coords = false
 	particles.gravity = Vector2.ZERO
 	particles.direction = Vector2.RIGHT
+
+
+func _process(_delta: float) -> void:
+	if not _is_following:
+		return
+
+	if not is_instance_valid(_follow_node):
+		_stop_emission()
+		return
+
+	_update_smoke_direction()
+	_update_emitter_transform()
 
 
 func play(
@@ -53,18 +65,6 @@ func play(
 	_stop_emission_later()
 
 
-func _process(_delta: float) -> void:
-	if not _is_following:
-		return
-
-	if not is_instance_valid(_follow_node):
-		_stop_emission()
-		return
-
-	_update_smoke_direction()
-	_update_emitter_transform()
-
-
 func _update_smoke_direction() -> void:
 	if not _follow_node.has_method("get_velocity_direction"):
 		return
@@ -74,14 +74,11 @@ func _update_smoke_direction() -> void:
 	if velocity_direction.length_squared() <= 0.0001:
 		return
 
-	# lerp なし。現在速度の逆方向へ即時反映。
 	_smoke_direction = -velocity_direction.normalized()
 
 
 func _update_emitter_transform() -> void:
 	global_position = _follow_node.global_position + _smoke_direction * spawn_back_offset
-
-	# 煙の放出方向も現在速度の逆方向へ即時反映。
 	global_rotation = _smoke_direction.angle()
 
 

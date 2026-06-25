@@ -27,20 +27,6 @@ func _process(delta: float) -> void:
 	global_position = follow_target.global_position + offset
 
 
-func setup(target: Node2D, initial_hp_ratio: float) -> void:
-	follow_target = target
-	set_hp_ratio(initial_hp_ratio)
-
-	if follow_target != null:
-		global_position = follow_target.global_position + offset
-
-
-func set_hp_ratio(value: float) -> void:
-	hp_ratio = clampf(value, 0.0, 1.0)
-	visible = hp_ratio < 1.0
-	queue_redraw()
-
-
 func _draw() -> void:
 	if not visible:
 		return
@@ -65,3 +51,17 @@ func _draw() -> void:
 		false,
 		1.0
 	)
+
+
+func setup(target: Node2D, initial_hp_ratio: float) -> void:
+	follow_target = target
+	set_hp_ratio(initial_hp_ratio)
+
+	if follow_target != null:
+		global_position = follow_target.global_position + offset
+
+
+func set_hp_ratio(value: float) -> void:
+	hp_ratio = clampf(value, 0.0, 1.0)
+	visible = hp_ratio < 1.0
+	queue_redraw()
