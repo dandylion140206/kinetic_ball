@@ -20,9 +20,9 @@ func _ready() -> void:
 	if use_generated_circle_texture and particles.texture == null:
 		particles.texture = _create_circle_texture(circle_texture_size)
 
-	# ここでは最低限だけ設定する
-	particles.gravity = Vector2.ZERO
 	particles.local_coords = false
+	particles.gravity = Vector2.ZERO
+	particles.direction = Vector2.RIGHT
 
 
 func play(
@@ -41,7 +41,8 @@ func play(
 	_smoke_direction = -boost_direction.normalized()
 	_is_following = true
 
-	_update_emitter_position()
+	_update_smoke_direction()
+	_update_emitter_transform()
 
 	particles.emitting = false
 	particles.restart()
@@ -60,11 +61,27 @@ func _process(_delta: float) -> void:
 		_stop_emission()
 		return
 
-	_update_emitter_position()
+	_update_smoke_direction()
+	_update_emitter_transform()
 
 
-func _update_emitter_position() -> void:
+func _update_smoke_direction() -> void:
+	if not _follow_node.has_method("get_velocity_direction"):
+		return
+
+	var velocity_direction: Vector2 = _follow_node.get_velocity_direction()
+
+	if velocity_direction.length_squared() <= 0.0001:
+		return
+
+	# lerp なし。現在速度の逆方向へ即時反映。
+	_smoke_direction = -velocity_direction.normalized()
+
+
+func _update_emitter_transform() -> void:
 	global_position = _follow_node.global_position + _smoke_direction * spawn_back_offset
+
+	# 煙の放出方向も現在速度の逆方向へ即時反映。
 	global_rotation = _smoke_direction.angle()
 
 

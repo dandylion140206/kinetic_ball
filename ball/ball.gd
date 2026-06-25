@@ -21,7 +21,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	var target_position := get_global_mouse_position()
 
 	velocity = movement.calculate_velocity(
@@ -47,19 +47,11 @@ func _physics_process(delta: float) -> void:
 	speed_updated.emit(velocity.length())
 
 
-	if Input.is_action_just_pressed("primary_action"):
-		var impulse := boost.try_activate(velocity)
+func get_velocity_direction() -> Vector2:
+	if velocity.length_squared() <= 0.0001:
+		return Vector2.ZERO
 
-		if impulse.length_squared() > 0.0001:
-			velocity += impulse
-			boost_activated.emit(
-				self,
-				impulse.normalized()
-			)
-
-	global_position += velocity * delta
-
-	speed_updated.emit(velocity.length())
+	return velocity.normalized()
 
 
 func _on_area_entered(area: Area2D) -> void:

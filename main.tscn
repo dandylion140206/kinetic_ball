@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://health_bal_layer.gd" id="7_4c57u"]
 [ext_resource type="Script" uid="uid://b2dog2m20x8s3" path="res://vfx_spawner.gd" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://c7mpnvlntsbrn" path="res://effects/boost_smoke_effect.tscn" id="8_5vw27"]
+[ext_resource type="PackedScene" uid="uid://c7spad1eefqnw" path="res://health_bar.tscn" id="8_efxa6"]
 
 [node name="Main" type="Node" unique_id=2035431096]
 script = ExtResource("1_1bvp3")
@@ -28,6 +29,7 @@ avoid_node = NodePath("../Ball")
 
 [node name="HealthBarLayer" type="Node2D" parent="." unique_id=1619796642]
 script = ExtResource("7_4c57u")
+health_bar_scene = ExtResource("8_efxa6")
 
 [node name="Cursor" parent="." unique_id=855206738 instance=ExtResource("1_0xm2m")]
 
