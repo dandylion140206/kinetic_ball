@@ -7,29 +7,37 @@
 [ext_resource type="Script" uid="uid://bfhimbix04kqp" path="res://speed_graph.gd" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://b8h5t4d243axg" path="res://target_spawner.gd" id="5_lquwl"]
 [ext_resource type="PackedScene" uid="uid://db4dp6n086j22" path="res://target/target.tscn" id="6_7mycd"]
-[ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://health_bar_layer.gd" id="7_4c57u"]
+[ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://ui/health_bar_layer.gd" id="7_4c57u"]
 [ext_resource type="Script" uid="uid://b2dog2m20x8s3" path="res://vfx_spawner.gd" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://c7mpnvlntsbrn" path="res://effects/boost_smoke_effect.tscn" id="8_5vw27"]
-[ext_resource type="PackedScene" uid="uid://c7spad1eefqnw" path="res://health_bar.tscn" id="8_efxa6"]
+[ext_resource type="PackedScene" uid="uid://c7spad1eefqnw" path="res://ui/health_bar.tscn" id="8_efxa6"]
+[ext_resource type="Script" uid="uid://cadjyiv23jck7" path="res://hit_reaction/hit_reaction_director.gd" id="9_dg77c"]
 
 [node name="Main" type="Node" unique_id=2035431096]
 script = ExtResource("1_1bvp3")
 
-[node name="DebugController" type="Node" parent="." unique_id=1144913885]
+[node name="DebugController" type="Node" parent="." unique_id=567968865]
 script = ExtResource("2_kek77")
+metadata/_custom_type_script = "uid://cqah54np3sxrt"
 
-[node name="VFXLayer" type="Node2D" parent="." unique_id=1393310937]
+[node name="VFXSpawner" type="Node2D" parent="." unique_id=1711497784]
 script = ExtResource("7_272bh")
 boost_smoke_scene = ExtResource("8_5vw27")
+metadata/_custom_type_script = "uid://b2dog2m20x8s3"
 
-[node name="TargetSpawner" type="Node" parent="." unique_id=1007765360 node_paths=PackedStringArray("avoid_node")]
+[node name="TargetSpawner" type="Node" parent="." unique_id=686693965]
 script = ExtResource("5_lquwl")
 target_scene = ExtResource("6_7mycd")
-avoid_node = NodePath("../Ball")
+metadata/_custom_type_script = "uid://b8h5t4d243axg"
 
-[node name="HealthBarLayer" type="Node2D" parent="." unique_id=1619796642]
+[node name="HealthBarLayer" type="Node2D" parent="." unique_id=37919551]
 script = ExtResource("7_4c57u")
 health_bar_scene = ExtResource("8_efxa6")
+metadata/_custom_type_script = "uid://dimnmy0ptmso1"
+
+[node name="HitReactionDirector" type="Node" parent="." unique_id=875439192]
+script = ExtResource("9_dg77c")
+metadata/_custom_type_script = "uid://cadjyiv23jck7"
 
 [node name="Cursor" parent="." unique_id=855206738 instance=ExtResource("1_0xm2m")]
 
@@ -37,12 +45,10 @@ health_bar_scene = ExtResource("8_efxa6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=386194748]
 
-[node name="SpeedGraph" type="Control" parent="CanvasLayer" unique_id=758416055]
+[node name="SpeedGraph" type="Control" parent="CanvasLayer" unique_id=1055740986]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 14.6
-offset_top = 15.7
-offset_right = 140.2
-offset_bottom = 96.0
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("3_h2yge")
-max_value = 6000.0
+metadata/_custom_type_script = "uid://bfhimbix04kqp"
