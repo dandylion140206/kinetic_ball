@@ -1,10 +1,11 @@
 class_name Target
-extends Area2D
+extends Node2D
 
 signal destroyed(target: Target)
 signal health_ratio_changed(target: Target, hp_ratio: float)
 
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var hit_area: Area2D = $HitArea
+@onready var collision_shape: CollisionShape2D = $HitArea/CollisionShape2D
 @onready var visual: TargetVisual = $TargetVisual
 @onready var damage_flash: DamageFlash = $DamageFlash
 @onready var health: Health = $Health
@@ -29,7 +30,18 @@ func take_damage(damage_info: Dictionary) -> void:
 
 
 func get_target_radius() -> float:
-	return visual.radius
+	return get_collision_radius()
+
+
+func get_collision_radius() -> float:
+	if collision_shape != null:
+		var shape := collision_shape.shape
+
+		if shape is CircleShape2D:
+			var circle := shape as CircleShape2D
+			return circle.radius * global_scale.x
+
+	return visual.radius * global_scale.x
 
 
 func get_hp_ratio() -> float:
@@ -59,12 +71,11 @@ func _on_health_damaged(
 		hit_sound_player.play_at(global_position)
 
 
-
 func _on_health_died() -> void:
 	destroy_sound_player.play_at(global_position)
 
-	monitoring = false
-	monitorable = false
+	hit_area.monitoring = false
+	hit_area.monitorable = false
 	collision_shape.disabled = true
 	visible = false
 

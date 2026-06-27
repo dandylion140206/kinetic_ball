@@ -3,7 +3,7 @@ extends Node
 
 @export var visual_path: NodePath
 @export var flash_color: Color = Color.WHITE
-@export_range(0.01, 0.5, 0.01) var duration: float = 0.15
+@export_range(0.01, 0.5, 0.01) var duration: float = 0.2
 
 var _tween: Tween
 

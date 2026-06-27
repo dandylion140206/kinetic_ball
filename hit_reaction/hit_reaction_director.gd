@@ -40,7 +40,7 @@ func play_hit_reaction(
 
 	var speed := _get_speed(damage_info)
 	var strength_ratio := _get_strength_ratio(speed)
-	var direction := _get_hit_direction(target, attacker, damage_info)
+	var hit_direction := _get_hit_direction(target, attacker, damage_info)
 
 	var duration := lerpf(
 		min_duration,
@@ -58,23 +58,27 @@ func play_hit_reaction(
 		duration * target_duration_multiplier
 	)
 
-	var impact_position := _get_impact_position(
+	var impact_data := _resolve_impact_data(
 		target,
 		attacker,
-		direction
+		damage_info,
+		hit_direction
 	)
+
+	var impact_position: Vector2 = impact_data["position"]
+	var impact_normal: Vector2 = impact_data["normal"]
 
 	if spark_enabled and strength_ratio >= spark_min_strength:
 		impact_spark_requested.emit(
 			impact_position,
-			-direction,
+			impact_normal,
 			strength_ratio
 		)
 
 	if camera_shake_enabled and strength_ratio >= camera_shake_min_strength:
 		camera_shake_requested.emit(
 			strength_ratio,
-			direction
+			hit_direction
 		)
 
 
@@ -129,7 +133,7 @@ func _get_hit_direction(
 		var value = damage_info["direction"]
 
 		if value is Vector2:
-			var direction := value as Vector2
+			var direction: Vector2 = value
 
 			if direction.length_squared() > 0.0001:
 				return direction.normalized()
@@ -146,24 +150,243 @@ func _get_hit_direction(
 	return Vector2.RIGHT
 
 
-func _get_impact_position(
+func _resolve_impact_data(
 	target: Node,
 	attacker: Node,
-	direction: Vector2
-) -> Vector2:
+	damage_info: Dictionary,
+	fallback_direction: Vector2
+) -> Dictionary:
+	var target_node := target as Node2D
+
+	if target_node == null:
+		return _get_fallback_impact_data(
+			target,
+			attacker,
+			fallback_direction
+		)
+
+	var movement_impact := _get_impact_from_movement_segment(
+		target,
+		attacker,
+		damage_info,
+		fallback_direction
+	)
+
+	if bool(movement_impact["found"]):
+		return movement_impact
+
+	return _get_fallback_impact_data(
+		target,
+		attacker,
+		fallback_direction
+	)
+
+
+func _get_impact_from_movement_segment(
+	target: Node,
+	attacker: Node,
+	damage_info: Dictionary,
+	fallback_direction: Vector2
+) -> Dictionary:
+	if not damage_info.has("movement_from"):
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	if not damage_info.has("movement_to"):
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	var from_value = damage_info["movement_from"]
+	var to_value = damage_info["movement_to"]
+
+	if not from_value is Vector2:
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	if not to_value is Vector2:
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	var movement_from: Vector2 = from_value
+	var movement_to: Vector2 = to_value
+
+	if movement_from.distance_squared_to(movement_to) <= 0.0001:
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	var target_node := target as Node2D
+
+	if target_node == null:
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	var target_center := target_node.global_position
+	var target_radius := _get_collision_radius(target)
+	var attacker_radius := _get_attacker_radius(attacker, damage_info)
+
+	var combined_radius := target_radius + attacker_radius
+
+	if combined_radius <= 0.0:
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	var entry_center_value: Variant = _get_segment_circle_entry_point(
+		movement_from,
+		movement_to,
+		target_center,
+		combined_radius
+	)
+
+	if entry_center_value == null:
+		return _make_impact_data(Vector2.ZERO, Vector2.ZERO, false)
+
+	var entry_center: Vector2 = entry_center_value
+	var normal := (entry_center - target_center).normalized()
+
+	if normal.length_squared() <= 0.0001:
+		normal = _get_fallback_normal(
+			target,
+			attacker,
+			fallback_direction
+		)
+
+	var impact_position := target_center + normal * target_radius
+
+	return _make_impact_data(
+		impact_position,
+		normal,
+		true
+	)
+
+
+func _get_segment_circle_entry_point(
+	segment_from: Vector2,
+	segment_to: Vector2,
+	circle_center: Vector2,
+	circle_radius: float
+) -> Variant:
+	var segment := segment_to - segment_from
+	var from_to_center := segment_from - circle_center
+
+	var a := segment.dot(segment)
+
+	if a <= 0.0001:
+		return null
+
+	var b := 2.0 * from_to_center.dot(segment)
+	var c := from_to_center.dot(from_to_center) - circle_radius * circle_radius
+
+	var discriminant := b * b - 4.0 * a * c
+
+	if discriminant < 0.0:
+		return null
+
+	var sqrt_discriminant := sqrt(discriminant)
+	var t1 := (-b - sqrt_discriminant) / (2.0 * a)
+	var t2 := (-b + sqrt_discriminant) / (2.0 * a)
+
+	var entry_t := INF
+
+	if t1 >= 0.0 and t1 <= 1.0:
+		entry_t = minf(entry_t, t1)
+
+	if t2 >= 0.0 and t2 <= 1.0:
+		entry_t = minf(entry_t, t2)
+
+	if entry_t == INF:
+		return null
+
+	return segment_from + segment * entry_t
+
+
+func _get_fallback_impact_data(
+	target: Node,
+	attacker: Node,
+	fallback_direction: Vector2
+) -> Dictionary:
 	var target_node := target as Node2D
 
 	if target_node == null:
 		var attacker_node := attacker as Node2D
 
 		if attacker_node != null:
-			return attacker_node.global_position
+			return _make_impact_data(
+				attacker_node.global_position,
+				_get_safe_direction(fallback_direction),
+				false
+			)
 
-		return Vector2.ZERO
+		return _make_impact_data(
+			Vector2.ZERO,
+			_get_safe_direction(fallback_direction),
+			false
+		)
 
-	var radius := 0.0
+	var normal := _get_fallback_normal(
+		target,
+		attacker,
+		fallback_direction
+	)
 
-	if target.has_method("get_target_radius"):
-		radius = float(target.get_target_radius())
+	var target_radius := _get_collision_radius(target)
+	var impact_position := target_node.global_position + normal * target_radius
 
-	return target_node.global_position - direction.normalized() * radius
+	return _make_impact_data(
+		impact_position,
+		normal,
+		false
+	)
+
+
+func _get_fallback_normal(
+	target: Node,
+	attacker: Node,
+	fallback_direction: Vector2
+) -> Vector2:
+	var target_node := target as Node2D
+	var attacker_node := attacker as Node2D
+
+	if target_node != null and attacker_node != null:
+		var normal := attacker_node.global_position - target_node.global_position
+
+		if normal.length_squared() > 0.0001:
+			return normal.normalized()
+
+	var safe_direction := _get_safe_direction(fallback_direction)
+
+	return -safe_direction
+
+
+func _get_safe_direction(direction: Vector2) -> Vector2:
+	if direction.length_squared() <= 0.0001:
+		return Vector2.RIGHT
+
+	return direction.normalized()
+
+
+func _get_collision_radius(node: Node) -> float:
+	if node == null:
+		return 0.0
+
+	if node.has_method("get_collision_radius"):
+		return float(node.get_collision_radius())
+
+	if node.has_method("get_target_radius"):
+		return float(node.get_target_radius())
+
+	return 0.0
+
+
+func _get_attacker_radius(
+	attacker: Node,
+	damage_info: Dictionary
+) -> float:
+	if damage_info.has("attacker_radius"):
+		return float(damage_info["attacker_radius"])
+
+	return _get_collision_radius(attacker)
+
+
+func _make_impact_data(
+	position: Vector2,
+	normal: Vector2,
+	found: bool
+) -> Dictionary:
+	return {
+		"position": position,
+		"normal": _get_safe_direction(normal),
+		"found": found
+	}

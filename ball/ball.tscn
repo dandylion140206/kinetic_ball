@@ -13,12 +13,14 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktgx5"]
 radius = 20.0
 
-[node name="Ball" type="Area2D" unique_id=452373054]
-collision_mask = 2
+[node name="Ball" type="Node2D" unique_id=922165264]
 script = ExtResource("1_x8fbi")
 movement_stats = ExtResource("2_pshbt")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=626301878]
+[node name="HitArea" type="Area2D" parent="." unique_id=835417546]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=626301878]
 shape = SubResource("CircleShape2D_ktgx5")
 
 [node name="BallVisual" type="Node2D" parent="." unique_id=1145665496]
@@ -45,5 +47,4 @@ metadata/_custom_type_script = "uid://yy0srp34g4cl"
 
 [node name="HitStopReceiver" type="Node" parent="." unique_id=191537168]
 script = ExtResource("9_vf1tv")
-visual_path = NodePath("../BallVisual")
 metadata/_custom_type_script = "uid://dpckb1ftogkt5"

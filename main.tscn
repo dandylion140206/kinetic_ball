@@ -41,6 +41,16 @@ metadata/_custom_type_script = "uid://dimnmy0ptmso1"
 
 [node name="HitReactionDirector" type="Node" parent="." unique_id=875439192]
 script = ExtResource("9_dg77c")
+min_speed = null
+max_speed = null
+min_duration = null
+max_duration = null
+attacker_duration_multiplier = null
+target_duration_multiplier = null
+spark_enabled = null
+spark_min_strength = null
+camera_shake_enabled = null
+camera_shake_min_strength = null
 metadata/_custom_type_script = "uid://cadjyiv23jck7"
 
 [node name="Cursor" parent="." unique_id=855206738 instance=ExtResource("1_0xm2m")]
