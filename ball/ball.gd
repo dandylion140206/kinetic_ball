@@ -158,7 +158,11 @@ func _on_damage_dealt(
 	if not impact_prediction.is_empty():
 		enriched_damage_info["impact_position"] = impact_prediction["position"]
 		enriched_damage_info["impact_normal"] = impact_prediction["normal"]
-		enriched_damage_info["impact_source"] = "shape_cast"
+
+		if impact_prediction.has("source"):
+			enriched_damage_info["impact_source"] = impact_prediction["source"]
+		else:
+			enriched_damage_info["impact_source"] = "segment_circle"
 
 	hit_confirmed.emit(
 		target,
