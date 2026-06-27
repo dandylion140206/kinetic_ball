@@ -17,24 +17,16 @@ signal hit_confirmed(
 @export var movement_stats: MovementStats
 
 var velocity: Vector2 = Vector2.ZERO
-var previous_global_position: Vector2 = Vector2.ZERO
-
-var _last_motion_from: Vector2 = Vector2.ZERO
-var _last_motion_to: Vector2 = Vector2.ZERO
 
 @onready var hit_area: Area2D = $HitArea
-@onready var collision_shape: CollisionShape2D = $HitArea/CollisionShape2D
 @onready var movement: Movement = $Movement
 @onready var boost: Boost = $Boost
 @onready var damage_dealer: DamageDealer = $DamageDealer
 @onready var hit_stop: HitStopReceiver = $HitStopReceiver
+@onready var impact_predictor: ImpactPredictor = $ImpactPredictor
 
 
 func _ready() -> void:
-	previous_global_position = global_position
-	_last_motion_from = global_position
-	_last_motion_to = global_position
-
 	hit_area.area_entered.connect(_on_area_entered)
 	hit_area.body_entered.connect(_on_body_entered)
 	damage_dealer.damage_dealt.connect(_on_damage_dealt)
@@ -56,19 +48,6 @@ func get_velocity_direction() -> Vector2:
 		return Vector2.ZERO
 
 	return velocity.normalized()
-
-
-func get_collision_radius() -> float:
-	if collision_shape == null:
-		return 0.0
-
-	var shape := collision_shape.shape
-
-	if shape is CircleShape2D:
-		var circle := shape as CircleShape2D
-		return circle.radius * global_scale.x
-
-	return 0.0
 
 
 func _process_normal_movement(delta: float) -> void:
@@ -123,12 +102,11 @@ func _try_activate_boost() -> bool:
 
 
 func _move_by_velocity(delta: float) -> void:
-	previous_global_position = global_position
-	_last_motion_from = global_position
+	var motion := velocity * delta
 
-	global_position += velocity * delta
+	impact_predictor.update_predictions(motion)
 
-	_last_motion_to = global_position
+	global_position += motion
 
 
 func _on_area_entered(area: Area2D) -> void:
@@ -175,11 +153,12 @@ func _on_damage_dealt(
 	damage_info: Dictionary
 ) -> void:
 	var enriched_damage_info := damage_info.duplicate()
+	var impact_prediction := impact_predictor.get_prediction_for_target(target)
 
-	enriched_damage_info["movement_from"] = _last_motion_from
-	enriched_damage_info["movement_to"] = _last_motion_to
-	enriched_damage_info["previous_global_position"] = previous_global_position
-	enriched_damage_info["attacker_radius"] = get_collision_radius()
+	if not impact_prediction.is_empty():
+		enriched_damage_info["impact_position"] = impact_prediction["position"]
+		enriched_damage_info["impact_normal"] = impact_prediction["normal"]
+		enriched_damage_info["impact_source"] = "shape_cast"
 
 	hit_confirmed.emit(
 		target,
