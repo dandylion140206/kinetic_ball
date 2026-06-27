@@ -6,12 +6,21 @@ extends Node
 @onready var target_spawner: TargetSpawner = $TargetSpawner
 @onready var health_bar_layer: HealthBarLayer = $HealthBarLayer
 @onready var hit_reaction_director: HitReactionDirector = $HitReactionDirector
+@onready var shake_camera: ShakeCamera = $ShakeCamera
 
 
 func _ready() -> void:
 	ball.speed_updated.connect(speed_graph.add_value)
 	ball.boost_activated.connect(vfx_spawner.spawn_boost_smoke)
 	ball.hit_confirmed.connect(hit_reaction_director.play_hit_reaction)
+
+	hit_reaction_director.impact_spark_requested.connect(
+		vfx_spawner.spawn_impact_spark
+	)
+
+	hit_reaction_director.camera_shake_requested.connect(
+		shake_camera.request_shake
+	)
 
 	target_spawner.target_spawned.connect(health_bar_layer.register_target)
 
