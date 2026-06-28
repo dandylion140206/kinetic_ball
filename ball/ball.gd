@@ -14,12 +14,12 @@ signal hit_confirmed(
 	damage_info: Dictionary
 )
 
-@export var movement_stats: MovementStats
+@export var ball_movement_stats: BallMovementStats
 
 var velocity: Vector2 = Vector2.ZERO
 
 @onready var hit_area: Area2D = $HitArea
-@onready var movement: Movement = $Movement
+@onready var ball_movement: BallMovement = $BallMovement
 @onready var boost: Boost = $Boost
 @onready var damage_dealer: DamageDealer = $DamageDealer
 @onready var hit_stop: HitStopReceiver = $HitStopReceiver
@@ -52,11 +52,11 @@ func get_velocity_direction() -> Vector2:
 func _process_normal_movement(delta: float) -> void:
 	var target_position := get_global_mouse_position()
 
-	velocity = movement.calculate_velocity(
+	velocity = ball_movement.calculate_velocity(
 		velocity,
 		global_position,
 		target_position,
-		movement_stats,
+		ball_movement_stats,
 		delta
 	)
 

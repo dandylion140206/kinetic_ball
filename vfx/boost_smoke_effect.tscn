@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c7mpnvlntsbrn"]
 
-[ext_resource type="Script" uid="uid://ccvmgmic8s0jd" path="res://effects/boost_smoke_effect.gd" id="1_etnyj"]
+[ext_resource type="Script" uid="uid://ccvmgmic8s0jd" path="res://vfx/boost_smoke_effect.gd" id="1_etnyj"]
 
 [sub_resource type="Curve" id="Curve_etnyj"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

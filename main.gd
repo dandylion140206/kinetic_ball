@@ -2,7 +2,7 @@ extends Node
 
 @onready var ball: Ball = $Ball
 @onready var speed_graph: SpeedGraph = $CanvasLayer/SpeedGraph
-@onready var vfx_spawner: VFX = $VFX
+@onready var vfx_spawner: VFXSpawner = $VFXSpawner
 @onready var target_spawner: TargetSpawner = $TargetSpawner
 @onready var health_bar_layer: HealthBarLayer = $HealthBarLayer
 @onready var hit_reaction_director: HitReactionDirector = $HitReactionDirector

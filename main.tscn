@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cixdwkowulknk" path="res://main.gd" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://c1dn0tadeo3xi" path="res://ball/ball.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cqah54np3sxrt" path="res://debug_controller.gd" id="2_kek77"]
-[ext_resource type="PackedScene" uid="uid://dbd5hittndecv" path="res://vfx/vfx.tscn" id="3_dg77c"]
+[ext_resource type="PackedScene" uid="uid://dbd5hittndecv" path="res://vfx/vfx_spawner.tscn" id="3_dg77c"]
 [ext_resource type="Script" uid="uid://bfhimbix04kqp" path="res://speed_graph.gd" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://b8h5t4d243axg" path="res://target_spawner.gd" id="5_lquwl"]
 [ext_resource type="PackedScene" uid="uid://db4dp6n086j22" path="res://target/target.tscn" id="6_7mycd"]
@@ -20,7 +20,7 @@ script = ExtResource("1_1bvp3")
 script = ExtResource("2_kek77")
 metadata/_custom_type_script = "uid://cqah54np3sxrt"
 
-[node name="VFX" parent="." unique_id=1699083331 instance=ExtResource("3_dg77c")]
+[node name="VFXSpawner" parent="." unique_id=918878007 instance=ExtResource("3_dg77c")]
 
 [node name="TargetSpawner" type="Node" parent="." unique_id=686693965 node_paths=PackedStringArray("avoid_node")]
 script = ExtResource("5_lquwl")

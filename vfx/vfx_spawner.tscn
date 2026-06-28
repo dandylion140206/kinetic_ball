@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dbd5hittndecv"]
+
+[ext_resource type="Script" uid="uid://b2dog2m20x8s3" path="res://vfx/vfx_spawner.gd" id="1_6yygd"]
+[ext_resource type="PackedScene" uid="uid://c7mpnvlntsbrn" path="res://vfx/boost_smoke_effect.tscn" id="2_x5asi"]
+
+[node name="VFXSpawner" type="Node2D" unique_id=918878007]
+script = ExtResource("1_6yygd")
+boost_smoke_scene = ExtResource("2_x5asi")
