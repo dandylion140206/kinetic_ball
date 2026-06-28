@@ -1,4 +1,4 @@
-class_name VFXSpawner
+class_name VFX
 extends Node2D
 
 @export var boost_smoke_scene: PackedScene
