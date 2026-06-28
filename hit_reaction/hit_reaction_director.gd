@@ -23,7 +23,7 @@ signal camera_shake_requested(
 func play_hit_reaction(
 	target: Node,
 	attacker: Node,
-	damage_info: Dictionary
+	damage_info: DamageInfo
 ) -> void:
 	if target == null or attacker == null:
 		return
@@ -83,11 +83,11 @@ func _find_hit_stop_receiver(node: Node) -> HitStopReceiver:
 	return null
 
 
-func _get_speed(damage_info: Dictionary) -> float:
-	if not damage_info.has("speed"):
+func _get_speed(damage_info: DamageInfo) -> float:
+	if damage_info == null:
 		return 0.0
 
-	return absf(float(damage_info["speed"]))
+	return absf(damage_info.speed)
 
 
 func _get_strength_ratio(speed: float) -> float:
@@ -109,16 +109,13 @@ func _get_strength_ratio(speed: float) -> float:
 func _get_hit_direction(
 	target: Node,
 	attacker: Node,
-	damage_info: Dictionary
+	damage_info: DamageInfo
 ) -> Vector2:
-	if damage_info.has("direction"):
-		var value = damage_info["direction"]
+	if damage_info != null:
+		var damage_direction := damage_info.direction
 
-		if value is Vector2:
-			var direction := value as Vector2
-
-			if direction.length_squared() > 0.0001:
-				return direction.normalized()
+		if damage_direction.length_squared() > 0.0001:
+			return damage_direction.normalized()
 
 	if attacker != null and attacker.has_method("get_velocity_direction"):
 		var attacker_direction = attacker.get_velocity_direction()

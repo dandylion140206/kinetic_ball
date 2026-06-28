@@ -11,23 +11,22 @@ signal boost_activated(
 signal hit_confirmed(
 	target: Node,
 	attacker: Node,
-	damage_info: Dictionary
+	damage_info: DamageInfo
 )
 
-@export var ball_movement_stats: BallMovementStats
+@export var movement_stats: BallMovementStats
 
 var velocity: Vector2 = Vector2.ZERO
 
-@onready var hit_area: Area2D = $HitArea
-@onready var ball_movement: BallMovement = $BallMovement
+@onready var movement: BallMovement = $BallMovement
 @onready var boost: Boost = $Boost
 @onready var damage_dealer: DamageDealer = $DamageDealer
 @onready var hit_stop: HitStopReceiver = $HitStopReceiver
+@onready var collision_handler: BallCollisionHandler = $BallCollisionHandler
 
 
 func _ready() -> void:
-	hit_area.area_entered.connect(_on_area_entered)
-	hit_area.body_entered.connect(_on_body_entered)
+	collision_handler.damage_receiver_entered.connect(_on_damage_receiver_entered)
 	damage_dealer.damage_dealt.connect(_on_damage_dealt)
 
 
@@ -52,11 +51,11 @@ func get_velocity_direction() -> Vector2:
 func _process_normal_movement(delta: float) -> void:
 	var target_position := get_global_mouse_position()
 
-	velocity = ball_movement.calculate_velocity(
+	velocity = movement.calculate_velocity(
 		velocity,
 		global_position,
 		target_position,
-		ball_movement_stats,
+		movement_stats,
 		delta
 	)
 
@@ -104,48 +103,18 @@ func _move_by_velocity(delta: float) -> void:
 	global_position += velocity * delta
 
 
-func _on_area_entered(area: Area2D) -> void:
-	var target := _find_damage_target(area)
-
+func _on_damage_receiver_entered(receiver: DamageReceiver) -> void:
 	damage_dealer.try_deal_damage(
-		target,
+		receiver,
 		self,
 		velocity
 	)
-
-
-func _on_body_entered(body: Node2D) -> void:
-	var target := _find_damage_target(body)
-
-	damage_dealer.try_deal_damage(
-		target,
-		self,
-		velocity
-	)
-
-
-func _find_damage_target(collider: Node) -> Node:
-	if collider == null:
-		return null
-
-	if collider.has_method("take_damage"):
-		return collider
-
-	var current := collider.get_parent()
-
-	while current != null:
-		if current.has_method("take_damage"):
-			return current
-
-		current = current.get_parent()
-
-	return collider
 
 
 func _on_damage_dealt(
 	target: Node,
 	attacker: Node,
-	damage_info: Dictionary
+	damage_info: DamageInfo
 ) -> void:
 	hit_confirmed.emit(
 		target,

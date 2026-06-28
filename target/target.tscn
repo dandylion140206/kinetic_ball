@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://ckij85u0fgpio" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="6_q5yam"]
 [ext_resource type="AudioStream" uid="uid://c2krkxiq0mr3k" path="res://assets/sfx/消滅/DSGNMisc_HIT-Fleeting Hit_HY_PC-002.wav" id="7_q5yam"]
 [ext_resource type="Script" uid="uid://dpckb1ftogkt5" path="res://hit_reaction/hit_stop_receiver.gd" id="8_5m6mw"]
+[ext_resource type="Script" uid="uid://xdrfr7muswch" path="res://components/damage/damage_receiver.gd" id="9_n0ue5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
 radius = 40.0
@@ -46,3 +47,6 @@ pitch_max = 1.06
 [node name="HitStopReceiver" type="Node" parent="." unique_id=1808367787]
 script = ExtResource("8_5m6mw")
 metadata/_custom_type_script = "uid://dpckb1ftogkt5"
+
+[node name="DamageReceiver" type="Node" parent="." unique_id=229314496]
+script = ExtResource("9_n0ue5")

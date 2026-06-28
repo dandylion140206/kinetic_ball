@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b67k0qxvqkn41" path="res://ball/ball.gd" id="1_x8fbi"]
 [ext_resource type="Script" uid="uid://ceaixy3h86plh" path="res://ball/ball_visual.gd" id="2_41u45"]
-[ext_resource type="Resource" uid="uid://dttotehilb1vj" path="res://ball/default_movement_stats.tres" id="2_vf1tv"]
+[ext_resource type="Resource" uid="uid://dttotehilb1vj" path="res://ball/default_ball_movement_stats.tres" id="2_vf1tv"]
 [ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/ball_movement.gd" id="3_ktgx5"]
 [ext_resource type="Script" uid="uid://yivvirrfwbk4" path="res://ball/boost.gd" id="5_0p2w7"]
 [ext_resource type="Script" uid="uid://c44vcmo5b7yyd" path="res://sound_player.gd" id="6_pshbt"]
-[ext_resource type="Script" uid="uid://yy0srp34g4cl" path="res://components/damage_dealer.gd" id="6_r541t"]
+[ext_resource type="Script" uid="uid://yy0srp34g4cl" path="res://components/damage/damage_dealer.gd" id="6_r541t"]
 [ext_resource type="AudioStream" uid="uid://dpai2b5xgyi41" path="res://assets/sfx/ブースト/DSGNMisc_HIT-Synth Hit_HY_PC-001.wav" id="7_pshbt"]
+[ext_resource type="Script" uid="uid://c0e4r7c3qcn4n" path="res://ball/ball_collision_handler.gd" id="8_orjm5"]
 [ext_resource type="Script" uid="uid://dpckb1ftogkt5" path="res://hit_reaction/hit_stop_receiver.gd" id="9_vf1tv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktgx5"]
@@ -15,7 +16,7 @@ radius = 20.0
 
 [node name="Ball" type="Node2D" unique_id=922165264]
 script = ExtResource("1_x8fbi")
-ball_movement_stats = ExtResource("2_vf1tv")
+movement_stats = ExtResource("2_vf1tv")
 
 [node name="HitArea" type="Area2D" parent="." unique_id=835417546]
 collision_mask = 2
@@ -41,10 +42,12 @@ script = ExtResource("6_pshbt")
 sound = ExtResource("7_pshbt")
 volume_db = -6.0
 
-[node name="DamageDealer" type="Node" parent="." unique_id=624204356]
-script = ExtResource("6_r541t")
-metadata/_custom_type_script = "uid://yy0srp34g4cl"
+[node name="BallCollisionHandler" type="Node" parent="." unique_id=779510675]
+script = ExtResource("8_orjm5")
 
 [node name="HitStopReceiver" type="Node" parent="." unique_id=191537168]
 script = ExtResource("9_vf1tv")
 metadata/_custom_type_script = "uid://dpckb1ftogkt5"
+
+[node name="DamageDealer" type="Node" parent="." unique_id=401864406]
+script = ExtResource("6_r541t")

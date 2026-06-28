@@ -9,24 +9,17 @@ signal health_ratio_changed(target: Target, hp_ratio: float)
 @onready var visual: TargetVisual = $TargetVisual
 @onready var damage_flash: DamageFlash = $DamageFlash
 @onready var health: Health = $Health
+@onready var damage_receiver: DamageReceiver = $DamageReceiver
 @onready var hit_sound_player: SoundPlayer = $HitSoundPlayer
 @onready var destroy_sound_player: SoundPlayer = $DestroySoundPlayer
 
 
 func _ready() -> void:
+	damage_receiver.damage_received.connect(_on_damage_received)
 	health.damaged.connect(_on_health_damaged)
 	health.died.connect(_on_health_died)
 
 	health_ratio_changed.emit(self, health.get_hp_ratio())
-
-
-func take_damage(damage_info: Dictionary) -> void:
-	var amount := _get_damage_amount(damage_info)
-
-	if amount <= 0.0:
-		return
-
-	health.apply_damage(amount)
 
 
 func get_target_radius() -> float:
@@ -48,11 +41,14 @@ func get_hp_ratio() -> float:
 	return health.get_hp_ratio()
 
 
-func _get_damage_amount(damage_info: Dictionary) -> float:
-	if not damage_info.has("amount"):
-		return 0.0
+func _on_damage_received(damage_info: DamageInfo) -> void:
+	if damage_info == null:
+		return
 
-	return float(damage_info["amount"])
+	if damage_info.amount <= 0.0:
+		return
+
+	health.apply_damage(damage_info.amount)
 
 
 func _on_health_damaged(

@@ -4,7 +4,7 @@ extends Node
 signal damage_dealt(
 	target: Node,
 	attacker: Node,
-	damage_info: Dictionary
+	damage_info: DamageInfo
 )
 
 @export_range(0, 5000, 100) var min_damage_speed: int = 500
@@ -14,11 +14,11 @@ signal damage_dealt(
 
 
 func try_deal_damage(
-	target: Node,
+	receiver: DamageReceiver,
 	attacker: Node,
 	velocity: Vector2
 ) -> void:
-	if target == null:
+	if receiver == null:
 		return
 
 	var speed := velocity.length()
@@ -28,26 +28,25 @@ func try_deal_damage(
 
 	var damage := _calculate_damage(speed)
 
-	var damage_info := {
-		"amount": damage,
-		"speed": speed,
-		"velocity": velocity,
-		"direction": _get_direction_from_velocity(velocity),
-		"attacker": attacker,
-	}
+	var damage_info := DamageInfo.new(
+		damage,
+		speed,
+		velocity,
+		_get_direction_from_velocity(velocity),
+		attacker
+	)
 
-	if target.has_method("take_damage"):
-		target.take_damage(damage_info)
-		damage_dealt.emit(
-			target,
-			attacker,
-			damage_info
-		)
+	receiver.receive_damage(damage_info)
+
+	damage_dealt.emit(
+		receiver.get_damage_target(),
+		attacker,
+		damage_info
+	)
 
 
 func _calculate_damage(speed: float) -> float:
 	var over_speed := speed - min_damage_speed
-
 	var damage := base_damage + over_speed * speed_damage_scale
 
 	return minf(damage, max_damage)
