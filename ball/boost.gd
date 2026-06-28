@@ -1,18 +1,23 @@
 class_name Boost
 extends Node
 
-@export_range(0, 5000, 100) var impulse_power: int = 1500
+@export_range(0, 5000, 100) var impulse_power: int = 1400
 @export_range(0.0, 2.0, 0.02) var cooldown: float = 0.4
+@export var sound_origin_path: NodePath = "../.."
 
 var _is_on_cooldown: bool = false
 
 @onready var cooldown_timer: Timer = $CooldownTimer
 @onready var boost_sound_player: OneShotSoundPlayer2D = $BoostSoundPlayer
+@onready var sound_origin: Node2D = get_node_or_null(sound_origin_path)
 
 
 func _ready() -> void:
 	cooldown_timer.one_shot = true
 	cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
+
+	if sound_origin == null:
+		push_warning("Boost: sound_origin is not assigned.")
 
 
 func try_activate(current_velocity: Vector2) -> Vector2:
@@ -27,7 +32,8 @@ func try_activate(current_velocity: Vector2) -> Vector2:
 	_is_on_cooldown = true
 	cooldown_timer.start(cooldown)
 
-	boost_sound_player.play_at(_get_owner_global_position())
+	if boost_sound_player != null:
+		boost_sound_player.play_at(_get_sound_position())
 
 	return boost_direction * impulse_power
 
@@ -43,13 +49,11 @@ func _calculate_boost_direction(current_velocity: Vector2) -> Vector2:
 	return current_velocity.normalized()
 
 
-func _get_owner_global_position() -> Vector2:
-	var owner_node := owner as Node2D
-
-	if owner_node == null:
+func _get_sound_position() -> Vector2:
+	if sound_origin == null:
 		return Vector2.ZERO
 
-	return owner_node.global_position
+	return sound_origin.global_position
 
 
 func _on_cooldown_timer_timeout() -> void:

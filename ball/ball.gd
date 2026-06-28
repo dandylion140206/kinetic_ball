@@ -19,7 +19,7 @@ signal hit_confirmed(
 @onready var input_controller: BallInputController = $BallInputController
 @onready var steering: BallSteering = $BallSteering
 @onready var motion: BallMotion = $BallMotion
-@onready var boost: Boost = $Boost
+@onready var boost_controller: BoostController = $BoostController
 @onready var damage_dealer: DamageDealer = $DamageDealer
 @onready var hit_stop: HitStopReceiver = $HitStopReceiver
 @onready var collision_handler: BallCollisionHandler = $BallCollisionHandler
@@ -28,6 +28,7 @@ signal hit_confirmed(
 func _ready() -> void:
 	collision_handler.damage_receiver_entered.connect(_on_damage_receiver_entered)
 	damage_dealer.damage_dealt.connect(_on_damage_dealt)
+	boost_controller.boost_activated.connect(_on_boost_activated)
 
 
 func _process(delta: float) -> void:
@@ -66,7 +67,7 @@ func _process_normal_movement(delta: float) -> void:
 	motion.set_velocity(next_velocity)
 
 	if input_controller.is_boost_requested():
-		_try_activate_boost()
+		boost_controller.try_activate()
 
 	motion.move(delta)
 
@@ -77,7 +78,7 @@ func _try_cancel_hit_stop_with_boost(delta: float) -> bool:
 	if not input_controller.is_boost_requested():
 		return false
 
-	if not _try_activate_boost():
+	if not boost_controller.try_activate():
 		return false
 
 	hit_stop.clear_hit_stop()
@@ -85,22 +86,6 @@ func _try_cancel_hit_stop_with_boost(delta: float) -> bool:
 	motion.move(delta)
 
 	speed_updated.emit(motion.get_speed())
-
-	return true
-
-
-func _try_activate_boost() -> bool:
-	var impulse := boost.try_activate(motion.get_velocity())
-
-	if impulse.length_squared() <= 0.0001:
-		return false
-
-	motion.add_impulse(impulse)
-
-	boost_activated.emit(
-		self,
-		impulse.normalized()
-	)
 
 	return true
 
@@ -122,4 +107,14 @@ func _on_damage_dealt(
 		target,
 		attacker,
 		damage_info
+	)
+
+
+func _on_boost_activated(
+	follow_node: Node2D,
+	boost_direction: Vector2
+) -> void:
+	boost_activated.emit(
+		follow_node,
+		boost_direction
 	)
