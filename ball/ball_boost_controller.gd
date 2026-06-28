@@ -1,4 +1,4 @@
-class_name BoostController
+class_name BallBoostController
 extends Node
 
 signal boost_activated(
@@ -7,10 +7,10 @@ signal boost_activated(
 )
 
 @export var boost_path: NodePath = "Boost"
-@export var motion_path: NodePath = "../BallMotion"
+@export var motion_path: NodePath = "../Motion"
 @export var follow_node_path: NodePath = ".."
 
-@onready var boost: Boost = get_node_or_null(boost_path)
+@onready var boost: BallBoost = get_node_or_null(boost_path)
 @onready var motion: BallMotion = get_node_or_null(motion_path)
 @onready var follow_node: Node2D = get_node_or_null(follow_node_path)
 
