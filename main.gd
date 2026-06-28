@@ -18,7 +18,7 @@ func _ready() -> void:
 		shake_camera.request_shake
 	)
 
-	target_spawner.target_spawned.connect(health_bar_layer.register_target)
+	target_spawner.target_spawned.connect(health_bar_layer.register_health_owner)
 
 	for target in target_spawner.targets:
-		health_bar_layer.register_target(target)
+		health_bar_layer.register_health_owner(target)

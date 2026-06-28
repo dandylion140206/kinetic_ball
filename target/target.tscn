@@ -9,6 +9,8 @@
 [ext_resource type="AudioStream" uid="uid://c2krkxiq0mr3k" path="res://assets/sfx/消滅/DSGNMisc_HIT-Fleeting Hit_HY_PC-002.wav" id="7_q5yam"]
 [ext_resource type="Script" uid="uid://dpckb1ftogkt5" path="res://hit_reaction/hit_stop_receiver.gd" id="8_5m6mw"]
 [ext_resource type="Script" uid="uid://xdrfr7muswch" path="res://components/damage/damage_receiver.gd" id="9_n0ue5"]
+[ext_resource type="Script" uid="uid://ravcuv0h4tyr" path="res://target/target_damage_feedback.gd" id="10_iod3p"]
+[ext_resource type="Script" uid="uid://def4p4pl4n6s6" path="res://target/target_death_handler.gd" id="11_g8qks"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
 radius = 40.0
@@ -50,3 +52,9 @@ metadata/_custom_type_script = "uid://dpckb1ftogkt5"
 
 [node name="DamageReceiver" type="Node" parent="." unique_id=229314496]
 script = ExtResource("9_n0ue5")
+
+[node name="TargetDamageFeedback" type="Node" parent="." unique_id=455386048]
+script = ExtResource("10_iod3p")
+
+[node name="TargetDeathHandler" type="Node" parent="." unique_id=966225960]
+script = ExtResource("11_g8qks")

@@ -2,24 +2,21 @@ class_name Target
 extends Node2D
 
 signal destroyed(target: Target)
-signal health_ratio_changed(target: Target, hp_ratio: float)
 
-@onready var hit_area: Area2D = $HitArea
 @onready var collision_shape: CollisionShape2D = $HitArea/CollisionShape2D
 @onready var visual: TargetVisual = $TargetVisual
-@onready var damage_flash: DamageFlash = $DamageFlash
 @onready var health: Health = $Health
+@onready var damage_flash: DamageFlash = $DamageFlash
+@onready var hit_sound_player: = HitSoundPlayer = $HitSoundPlayer
 @onready var damage_receiver: DamageReceiver = $DamageReceiver
-@onready var hit_sound_player: SoundPlayer = $HitSoundPlayer
-@onready var destroy_sound_player: SoundPlayer = $DestroySoundPlayer
+@onready var damage_feedback: TargetDamageFeedback = $TargetDamageFeedback
+@onready var death_handler: TargetDeathHandler = $TargetDeathHandler
 
 
 func _ready() -> void:
 	damage_receiver.damage_received.connect(_on_damage_received)
 	health.damaged.connect(_on_health_damaged)
 	health.died.connect(_on_health_died)
-
-	health_ratio_changed.emit(self, health.get_hp_ratio())
 
 
 func get_target_radius() -> float:
@@ -61,19 +58,12 @@ func _on_health_damaged(
 	visual.set_hp_ratio(hp_ratio)
 	damage_flash.flash()
 
-	health_ratio_changed.emit(self, hp_ratio)
-
 	if current_hp > 0.0:
 		hit_sound_player.play_at(global_position)
 
 
 func _on_health_died() -> void:
-	destroy_sound_player.play_at(global_position)
-
-	hit_area.monitoring = false
-	hit_area.monitorable = false
-	collision_shape.disabled = true
-	visible = false
+	death_handler.handle_death(self)
 
 	destroyed.emit(self)
 
