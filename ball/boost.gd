@@ -7,7 +7,7 @@ extends Node
 var _is_on_cooldown: bool = false
 
 @onready var cooldown_timer: Timer = $CooldownTimer
-@onready var boost_sound_player: SoundPlayer = $BoostSoundPlayer
+@onready var boost_sound_player: OneShotSoundPlayer2D = $BoostSoundPlayer
 
 
 func _ready() -> void:

@@ -7,7 +7,7 @@ extends Node
 
 @onready var visual: TargetVisual = get_node_or_null(visual_path)
 @onready var flash_overlay: FlashOverlay = get_node_or_null(flash_overlay_path)
-@onready var hit_sound_player: SoundPlayer = get_node_or_null(hit_sound_player_path)
+@onready var hit_sound_player: OneShotSoundPlayer2D = get_node_or_null(hit_sound_player_path)
 
 
 func play_damage_feedback(hp_ratio: float) -> void:

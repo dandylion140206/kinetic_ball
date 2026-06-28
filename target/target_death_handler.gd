@@ -7,7 +7,7 @@ extends Node
 
 @onready var hit_area: Area2D = get_node_or_null(hit_area_path)
 @onready var collision_shape: CollisionShape2D = get_node_or_null(collision_shape_path)
-@onready var destroy_sound_player: SoundPlayer = get_node_or_null(destroy_sound_player_path)
+@onready var destroy_sound_player: OneShotSoundPlayer2D = get_node_or_null(destroy_sound_player_path)
 
 
 func handle_death(target: Node2D) -> void:

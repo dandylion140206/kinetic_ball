@@ -1,4 +1,4 @@
-class_name SoundPlayer
+class_name OneShotSoundPlayer2D
 extends Node
 
 @export var sound: AudioStream
@@ -39,7 +39,9 @@ func _get_valid_bus_name() -> StringName:
 	var bus_index := AudioServer.get_bus_index(bus_name)
 
 	if bus_index == -1:
-		push_warning("SoundPlayer: Audio bus not found: %s. Fallback to Master." % bus_name)
+		push_warning(
+			"OneShotSoundPlayer2D: Audio bus not found: %s. Fallback to Master." % bus_name
+		)
 		return &"Master"
 
 	return bus_name

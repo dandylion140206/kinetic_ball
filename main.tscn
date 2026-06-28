@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bfhimbix04kqp" path="res://speed_graph.gd" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://b8h5t4d243axg" path="res://target_spawner.gd" id="5_lquwl"]
 [ext_resource type="PackedScene" uid="uid://db4dp6n086j22" path="res://target/target.tscn" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://e3awkxq8uxit" path="res://spawn_position_provider.gd" id="6_ycdy4"]
 [ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://ui/health_bar_layer.gd" id="7_4c57u"]
 [ext_resource type="PackedScene" uid="uid://c7spad1eefqnw" path="res://ui/health_bar.tscn" id="8_efxa6"]
 [ext_resource type="Script" uid="uid://cadjyiv23jck7" path="res://hit_reaction/hit_reaction_director.gd" id="9_dg77c"]
@@ -22,11 +23,13 @@ metadata/_custom_type_script = "uid://cqah54np3sxrt"
 
 [node name="VFXSpawner" parent="." unique_id=918878007 instance=ExtResource("3_dg77c")]
 
-[node name="TargetSpawner" type="Node" parent="." unique_id=686693965 node_paths=PackedStringArray("avoid_node")]
+[node name="TargetSpawner" type="Node" parent="." unique_id=1281068545]
 script = ExtResource("5_lquwl")
 target_scene = ExtResource("6_7mycd")
-avoid_node = NodePath("../Ball")
-metadata/_custom_type_script = "uid://b8h5t4d243axg"
+
+[node name="SpawnPositionProvider" type="Node" parent="TargetSpawner" unique_id=257829831 node_paths=PackedStringArray("avoid_node")]
+script = ExtResource("6_ycdy4")
+avoid_node = NodePath("../../Ball")
 
 [node name="HealthBarLayer" type="Node2D" parent="." unique_id=37919551]
 script = ExtResource("7_4c57u")

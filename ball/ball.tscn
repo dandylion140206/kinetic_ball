@@ -6,8 +6,8 @@
 [ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/ball_movement.gd" id="3_ktgx5"]
 [ext_resource type="Script" uid="uid://yivvirrfwbk4" path="res://ball/boost.gd" id="5_0p2w7"]
 [ext_resource type="Script" uid="uid://bqueh340e20pu" path="res://ball/ball_input_controller.gd" id="5_melhi"]
-[ext_resource type="Script" uid="uid://c44vcmo5b7yyd" path="res://sound_player.gd" id="6_pshbt"]
 [ext_resource type="Script" uid="uid://yy0srp34g4cl" path="res://components/damage/damage_dealer.gd" id="6_r541t"]
+[ext_resource type="Script" uid="uid://ugts0151vg83" path="res://components/audio/one_shot_sound_player_2d.gd" id="7_melhi"]
 [ext_resource type="AudioStream" uid="uid://dpai2b5xgyi41" path="res://assets/sfx/ブースト/DSGNMisc_HIT-Synth Hit_HY_PC-001.wav" id="7_pshbt"]
 [ext_resource type="Script" uid="uid://c0e4r7c3qcn4n" path="res://ball/ball_collision_handler.gd" id="8_orjm5"]
 [ext_resource type="Script" uid="uid://dpckb1ftogkt5" path="res://hit_reaction/hit_stop_receiver.gd" id="9_vf1tv"]
@@ -37,12 +37,13 @@ script = ExtResource("5_melhi")
 [node name="Boost" type="Node" parent="." unique_id=645992355]
 script = ExtResource("5_0p2w7")
 impulse_power = 1300
+cooldown = null
 
 [node name="CooldownTimer" type="Timer" parent="Boost" unique_id=495570790]
 one_shot = true
 
 [node name="BoostSoundPlayer" type="Node" parent="Boost" unique_id=931417895]
-script = ExtResource("6_pshbt")
+script = ExtResource("7_melhi")
 sound = ExtResource("7_pshbt")
 volume_db = -6.0
 
