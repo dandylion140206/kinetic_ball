@@ -23,7 +23,6 @@ var velocity: Vector2 = Vector2.ZERO
 @onready var boost: Boost = $Boost
 @onready var damage_dealer: DamageDealer = $DamageDealer
 @onready var hit_stop: HitStopReceiver = $HitStopReceiver
-@onready var impact_predictor: ImpactPredictor = $ImpactPredictor
 
 
 func _ready() -> void:
@@ -102,11 +101,7 @@ func _try_activate_boost() -> bool:
 
 
 func _move_by_velocity(delta: float) -> void:
-	var motion := velocity * delta
-
-	impact_predictor.update_predictions(motion)
-
-	global_position += motion
+	global_position += velocity * delta
 
 
 func _on_area_entered(area: Area2D) -> void:
@@ -152,20 +147,8 @@ func _on_damage_dealt(
 	attacker: Node,
 	damage_info: Dictionary
 ) -> void:
-	var enriched_damage_info := damage_info.duplicate()
-	var impact_prediction := impact_predictor.get_prediction_for_target(target)
-
-	if not impact_prediction.is_empty():
-		enriched_damage_info["impact_position"] = impact_prediction["position"]
-		enriched_damage_info["impact_normal"] = impact_prediction["normal"]
-
-		if impact_prediction.has("source"):
-			enriched_damage_info["impact_source"] = impact_prediction["source"]
-		else:
-			enriched_damage_info["impact_source"] = "segment_circle"
-
 	hit_confirmed.emit(
 		target,
 		attacker,
-		enriched_damage_info
+		damage_info
 	)

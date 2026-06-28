@@ -14,10 +14,6 @@ func _ready() -> void:
 	ball.boost_activated.connect(vfx_spawner.spawn_boost_smoke)
 	ball.hit_confirmed.connect(hit_reaction_director.play_hit_reaction)
 
-	hit_reaction_director.impact_spark_requested.connect(
-		vfx_spawner.spawn_impact_spark
-	)
-
 	hit_reaction_director.camera_shake_requested.connect(
 		shake_camera.request_shake
 	)

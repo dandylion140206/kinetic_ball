@@ -1,9 +1,0 @@
-[gd_scene format=3 uid="uid://bqwwigjqkvnvu"]
-
-[ext_resource type="Script" uid="uid://cdmchhvumtwc3" path="res://hit_reaction/impact_spark_effect.gd" id="1_1pyej"]
-
-[node name="ImpactSparkEffect" type="Node2D" unique_id=799678956]
-script = ExtResource("1_1pyej")
-angle_jitter_degrees = 20.0
-lifetime_min = 0.16
-lifetime_max = 0.38
