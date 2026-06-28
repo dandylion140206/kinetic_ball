@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dux5lc45m8t8h" path="res://target/target.gd" id="1_sp8cc"]
 [ext_resource type="Script" uid="uid://b27iur02l1su8" path="res://target/target_visual.gd" id="2_itqbd"]
 [ext_resource type="Script" uid="uid://c43si4dbixk67" path="res://components/health.gd" id="3_6nu6o"]
-[ext_resource type="Script" uid="uid://dhwukke0lvuum" path="res://components/damage_flash.gd" id="4_q5yam"]
+[ext_resource type="Script" uid="uid://dj2278e6b3ura" path="res://components/visual/flash_overlay.gd" id="4_iod3p"]
 [ext_resource type="Script" uid="uid://c44vcmo5b7yyd" path="res://sound_player.gd" id="5_6nu6o"]
 [ext_resource type="AudioStream" uid="uid://ckij85u0fgpio" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="6_q5yam"]
 [ext_resource type="AudioStream" uid="uid://c2krkxiq0mr3k" path="res://assets/sfx/消滅/DSGNMisc_HIT-Fleeting Hit_HY_PC-002.wav" id="7_q5yam"]
@@ -31,9 +31,9 @@ script = ExtResource("2_itqbd")
 [node name="Health" type="Node" parent="." unique_id=1435787681]
 script = ExtResource("3_6nu6o")
 
-[node name="DamageFlash" type="Node" parent="." unique_id=1254429179]
-script = ExtResource("4_q5yam")
-visual_path = NodePath("../TargetVisual")
+[node name="FlashOverlay" type="Node" parent="." unique_id=1254429179]
+script = ExtResource("4_iod3p")
+overlay_target_path = NodePath("../TargetVisual")
 
 [node name="HitSoundPlayer" type="Node" parent="." unique_id=1108541957]
 script = ExtResource("5_6nu6o")

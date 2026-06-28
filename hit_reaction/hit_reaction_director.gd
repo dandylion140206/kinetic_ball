@@ -59,28 +59,16 @@ func _request_hit_stop(
 	node: Node,
 	duration: float
 ) -> void:
-	var receiver := _find_hit_stop_receiver(node)
-
-	if receiver == null:
+	if node == null:
 		return
 
-	receiver.request_hit_stop(duration)
+	if duration <= 0.0:
+		return
 
+	if not node.has_method("request_hit_stop"):
+		return
 
-func _find_hit_stop_receiver(node: Node) -> HitStopReceiver:
-	if node == null:
-		return null
-
-	var direct_receiver := node.get_node_or_null("HitStopReceiver") as HitStopReceiver
-
-	if direct_receiver != null:
-		return direct_receiver
-
-	for child in node.get_children():
-		if child is HitStopReceiver:
-			return child
-
-	return null
+	node.request_hit_stop(duration)
 
 
 func _get_speed(damage_info: DamageInfo) -> float:

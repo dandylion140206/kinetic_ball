@@ -18,6 +18,7 @@ signal hit_confirmed(
 
 var velocity: Vector2 = Vector2.ZERO
 
+@onready var input_controller: BallInputController = $BallInputController
 @onready var movement: BallMovement = $BallMovement
 @onready var boost: Boost = $Boost
 @onready var damage_dealer: DamageDealer = $DamageDealer
@@ -48,8 +49,15 @@ func get_velocity_direction() -> Vector2:
 	return velocity.normalized()
 
 
+func request_hit_stop(duration: float) -> void:
+	if hit_stop == null:
+		return
+
+	hit_stop.request_hit_stop(duration)
+
+
 func _process_normal_movement(delta: float) -> void:
-	var target_position := get_global_mouse_position()
+	var target_position := input_controller.get_movement_target(self)
 
 	velocity = movement.calculate_velocity(
 		velocity,
@@ -59,7 +67,7 @@ func _process_normal_movement(delta: float) -> void:
 		delta
 	)
 
-	if Input.is_action_just_pressed("primary_action"):
+	if input_controller.is_boost_requested():
 		_try_activate_boost()
 
 	_move_by_velocity(delta)
@@ -68,7 +76,7 @@ func _process_normal_movement(delta: float) -> void:
 
 
 func _try_cancel_hit_stop_with_boost(delta: float) -> bool:
-	if not Input.is_action_just_pressed("primary_action"):
+	if not input_controller.is_boost_requested():
 		return false
 
 	if not _try_activate_boost():

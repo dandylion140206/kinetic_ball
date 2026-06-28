@@ -6,11 +6,10 @@ signal destroyed(target: Target)
 @onready var collision_shape: CollisionShape2D = $HitArea/CollisionShape2D
 @onready var visual: TargetVisual = $TargetVisual
 @onready var health: Health = $Health
-@onready var damage_flash: DamageFlash = $DamageFlash
-@onready var hit_sound_player: = HitSoundPlayer = $HitSoundPlayer
 @onready var damage_receiver: DamageReceiver = $DamageReceiver
 @onready var damage_feedback: TargetDamageFeedback = $TargetDamageFeedback
 @onready var death_handler: TargetDeathHandler = $TargetDeathHandler
+@onready var hit_stop: HitStopReceiver = $HitStopReceiver
 
 
 func _ready() -> void:
@@ -38,6 +37,13 @@ func get_hp_ratio() -> float:
 	return health.get_hp_ratio()
 
 
+func request_hit_stop(duration: float) -> void:
+	if hit_stop == null:
+		return
+
+	hit_stop.request_hit_stop(duration)
+
+
 func _on_damage_received(damage_info: DamageInfo) -> void:
 	if damage_info == null:
 		return
@@ -49,17 +55,16 @@ func _on_damage_received(damage_info: DamageInfo) -> void:
 
 
 func _on_health_damaged(
-	amount: float,
+	_amount: float,
 	current_hp: float,
-	max_hp: float
+	_max_hp: float
 ) -> void:
 	var hp_ratio := health.get_hp_ratio()
 
-	visual.set_hp_ratio(hp_ratio)
-	damage_flash.flash()
+	damage_feedback.play_damage_feedback(hp_ratio)
 
 	if current_hp > 0.0:
-		hit_sound_player.play_at(global_position)
+		damage_feedback.play_hit_sound(global_position)
 
 
 func _on_health_died() -> void:
