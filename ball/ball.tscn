@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://b67k0qxvqkn41" path="res://ball/ball.gd" id="1_x8fbi"]
 [ext_resource type="Script" uid="uid://ceaixy3h86plh" path="res://ball/ball_visual.gd" id="2_41u45"]
-[ext_resource type="Resource" uid="uid://dttotehilb1vj" path="res://ball/default_ball_movement_stats.tres" id="2_vf1tv"]
-[ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/ball_movement.gd" id="3_ktgx5"]
+[ext_resource type="Resource" uid="uid://dttotehilb1vj" path="res://ball/default_ball_steering_stats.tres" id="2_vf1tv"]
+[ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/ball_steering.gd" id="3_ktgx5"]
+[ext_resource type="Script" uid="uid://b8ouhsu7quywx" path="res://ball/ball_motion.gd" id="4_w6tmd"]
 [ext_resource type="Script" uid="uid://yivvirrfwbk4" path="res://ball/boost.gd" id="5_0p2w7"]
 [ext_resource type="Script" uid="uid://bqueh340e20pu" path="res://ball/ball_input_controller.gd" id="5_melhi"]
 [ext_resource type="Script" uid="uid://yy0srp34g4cl" path="res://components/damage/damage_dealer.gd" id="6_r541t"]
@@ -17,7 +18,7 @@ radius = 20.0
 
 [node name="Ball" type="Node2D" unique_id=922165264]
 script = ExtResource("1_x8fbi")
-movement_stats = ExtResource("2_vf1tv")
+steering_stats = ExtResource("2_vf1tv")
 
 [node name="HitArea" type="Area2D" parent="." unique_id=835417546]
 collision_mask = 2
@@ -28,7 +29,10 @@ shape = SubResource("CircleShape2D_ktgx5")
 [node name="BallVisual" type="Node2D" parent="." unique_id=1145665496]
 script = ExtResource("2_41u45")
 
-[node name="BallMovement" type="Node" parent="." unique_id=1298670590]
+[node name="BallMotion" type="Node" parent="." unique_id=1936661265]
+script = ExtResource("4_w6tmd")
+
+[node name="BallSteering" type="Node" parent="." unique_id=1298670590]
 script = ExtResource("3_ktgx5")
 
 [node name="BallInputController" type="Node" parent="." unique_id=724754623]

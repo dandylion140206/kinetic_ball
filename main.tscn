@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://dimnmy0ptmso1" path="res://ui/health_bar_layer.gd" id="7_4c57u"]
 [ext_resource type="PackedScene" uid="uid://c7spad1eefqnw" path="res://ui/health_bar.tscn" id="8_efxa6"]
 [ext_resource type="Script" uid="uid://cadjyiv23jck7" path="res://hit_reaction/hit_reaction_director.gd" id="9_dg77c"]
-[ext_resource type="Script" uid="uid://bc8pxih32vytg" path="res://hit_reaction/shake_camera.gd" id="14_w48qg"]
+[ext_resource type="Script" uid="uid://bc8pxih32vytg" path="res://hit_reaction/camera_shake.gd" id="14_w48qg"]
 
 [node name="Main" type="Node" unique_id=2035431096]
 script = ExtResource("1_1bvp3")
@@ -54,6 +54,7 @@ offset_bottom = 90.0
 script = ExtResource("3_h2yge")
 metadata/_custom_type_script = "uid://bfhimbix04kqp"
 
-[node name="ShakeCamera" type="Camera2D" parent="." unique_id=1234649292]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=299093484]
+
+[node name="CameraShake" type="Node" parent="Camera2D" unique_id=533676051]
 script = ExtResource("14_w48qg")
-metadata/_custom_type_script = "uid://bc8pxih32vytg"

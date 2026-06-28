@@ -14,12 +14,11 @@ signal hit_confirmed(
 	damage_info: DamageInfo
 )
 
-@export var movement_stats: BallMovementStats
-
-var velocity: Vector2 = Vector2.ZERO
+@export var steering_stats: BallSteeringStats
 
 @onready var input_controller: BallInputController = $BallInputController
-@onready var movement: BallMovement = $BallMovement
+@onready var steering: BallSteering = $BallSteering
+@onready var motion: BallMotion = $BallMotion
 @onready var boost: Boost = $Boost
 @onready var damage_dealer: DamageDealer = $DamageDealer
 @onready var hit_stop: HitStopReceiver = $HitStopReceiver
@@ -36,17 +35,14 @@ func _process(delta: float) -> void:
 		if _try_cancel_hit_stop_with_boost(delta):
 			return
 
-		speed_updated.emit(velocity.length())
+		speed_updated.emit(motion.get_speed())
 		return
 
 	_process_normal_movement(delta)
 
 
 func get_velocity_direction() -> Vector2:
-	if velocity.length_squared() <= 0.0001:
-		return Vector2.ZERO
-
-	return velocity.normalized()
+	return motion.get_velocity_direction()
 
 
 func request_hit_stop(duration: float) -> void:
@@ -59,20 +55,22 @@ func request_hit_stop(duration: float) -> void:
 func _process_normal_movement(delta: float) -> void:
 	var target_position := input_controller.get_movement_target(self)
 
-	velocity = movement.calculate_velocity(
-		velocity,
+	var next_velocity := steering.calculate_velocity(
+		motion.get_velocity(),
 		global_position,
 		target_position,
-		movement_stats,
+		steering_stats,
 		delta
 	)
+
+	motion.set_velocity(next_velocity)
 
 	if input_controller.is_boost_requested():
 		_try_activate_boost()
 
-	_move_by_velocity(delta)
+	motion.move(delta)
 
-	speed_updated.emit(velocity.length())
+	speed_updated.emit(motion.get_speed())
 
 
 func _try_cancel_hit_stop_with_boost(delta: float) -> bool:
@@ -84,20 +82,20 @@ func _try_cancel_hit_stop_with_boost(delta: float) -> bool:
 
 	hit_stop.clear_hit_stop()
 
-	_move_by_velocity(delta)
+	motion.move(delta)
 
-	speed_updated.emit(velocity.length())
+	speed_updated.emit(motion.get_speed())
 
 	return true
 
 
 func _try_activate_boost() -> bool:
-	var impulse := boost.try_activate(velocity)
+	var impulse := boost.try_activate(motion.get_velocity())
 
 	if impulse.length_squared() <= 0.0001:
 		return false
 
-	velocity += impulse
+	motion.add_impulse(impulse)
 
 	boost_activated.emit(
 		self,
@@ -107,15 +105,11 @@ func _try_activate_boost() -> bool:
 	return true
 
 
-func _move_by_velocity(delta: float) -> void:
-	global_position += velocity * delta
-
-
 func _on_damage_receiver_entered(receiver: DamageReceiver) -> void:
 	damage_dealer.try_deal_damage(
 		receiver,
 		self,
-		velocity
+		motion.get_velocity()
 	)
 
 

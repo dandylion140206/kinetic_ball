@@ -6,7 +6,7 @@ extends Node
 @onready var target_spawner: TargetSpawner = $TargetSpawner
 @onready var health_bar_layer: HealthBarLayer = $HealthBarLayer
 @onready var hit_reaction_director: HitReactionDirector = $HitReactionDirector
-@onready var shake_camera: ShakeCamera = $ShakeCamera
+@onready var camera_shake: CameraShake = $Camera2D/CameraShake
 
 
 func _ready() -> void:
@@ -15,7 +15,7 @@ func _ready() -> void:
 	ball.hit_confirmed.connect(hit_reaction_director.play_hit_reaction)
 
 	hit_reaction_director.camera_shake_requested.connect(
-		shake_camera.request_shake
+		camera_shake.request_shake
 	)
 
 	target_spawner.target_spawned.connect(health_bar_layer.register_health_owner)

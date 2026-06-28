@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BallMovementStats" format=3 uid="uid://dttotehilb1vj"]
 
-[ext_resource type="Script" uid="uid://j17m4fgej58w" path="res://ball/ball_movement_stats.gd" id="1_pla68"]
+[ext_resource type="Script" uid="uid://j17m4fgej58w" path="res://ball/ball_steering_stats.gd" id="1_pla68"]
 
 [resource]
 script = ExtResource("1_pla68")

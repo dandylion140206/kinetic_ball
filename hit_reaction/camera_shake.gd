@@ -1,5 +1,10 @@
-class_name ShakeCamera
-extends Camera2D
+class_name CameraShake
+extends Node
+
+@export var camera_path: NodePath = ".."
+
+@export var make_current_on_ready: bool = true
+@export var center_camera_on_ready: bool = true
 
 @export_range(0.0, 30.0, 0.5) var min_power: float = 1.0
 @export_range(0.0, 50.0, 0.5) var max_power: float = 6.0
@@ -15,22 +20,35 @@ var _shake_direction: Vector2 = Vector2.RIGHT
 var _base_offset: Vector2 = Vector2.ZERO
 var _frame_index: int = 0
 
+@onready var camera: Camera2D = get_node_or_null(camera_path)
+
 
 func _ready() -> void:
-	enabled = true
-	make_current()
+	if camera == null:
+		push_warning("CameraShake: camera is not assigned.")
+		set_process(false)
+		return
 
-	_base_offset = offset
+	if make_current_on_ready:
+		camera.enabled = true
+		camera.make_current()
 
-	var viewport_size := get_viewport_rect().size
-	global_position = viewport_size * 0.5
+	if center_camera_on_ready:
+		var viewport_rect := get_viewport().get_visible_rect()
+		camera.global_position = viewport_rect.position + viewport_rect.size * 0.5
+
+	_base_offset = camera.offset
 
 	set_process(false)
 
 
 func _process(_delta: float) -> void:
+	if camera == null:
+		set_process(false)
+		return
+
 	if not _is_shaking():
-		offset = _base_offset
+		camera.offset = _base_offset
 		set_process(false)
 		return
 
@@ -41,9 +59,14 @@ func request_shake(
 	strength_ratio: float,
 	direction: Vector2
 ) -> void:
+	if camera == null:
+		return
+
 	strength_ratio = clampf(strength_ratio, 0.0, 1.0)
 
 	var now := Time.get_ticks_msec()
+	var was_shaking := _is_shaking_at(now)
+
 	var duration := lerpf(
 		min_duration,
 		max_duration,
@@ -64,7 +87,7 @@ func request_shake(
 		new_end_msec
 	)
 
-	if not _is_shaking() or new_power >= current_power:
+	if not was_shaking or new_power >= current_power:
 		_shake_start_msec = now
 		_shake_duration_msec = maxi(
 			1,
@@ -87,8 +110,9 @@ func _apply_shake() -> void:
 		main_sign = -1.0
 
 	var perpendicular_sign := 1.0
+	var perpendicular_phase := floori(float(_frame_index) / 2.0)
 
-	if (_frame_index / 2) % 2 == 1:
+	if perpendicular_phase % 2 == 1:
 		perpendicular_sign = -1.0
 
 	var perpendicular := Vector2(
@@ -99,13 +123,13 @@ func _apply_shake() -> void:
 	var shake_offset := _shake_direction * main_sign * current_power
 	shake_offset += perpendicular * perpendicular_sign * current_power * 0.5
 
-	offset = _base_offset + shake_offset
+	camera.offset = _base_offset + shake_offset
 
 	_frame_index += 1
 
 
 func _get_current_power(now: int) -> float:
-	if not _is_shaking():
+	if not _is_shaking_at(now):
 		return 0.0
 
 	var elapsed := now - _shake_start_msec
@@ -118,7 +142,11 @@ func _get_current_power(now: int) -> float:
 
 
 func _is_shaking() -> bool:
-	return Time.get_ticks_msec() < _shake_end_msec
+	return _is_shaking_at(Time.get_ticks_msec())
+
+
+func _is_shaking_at(now: int) -> bool:
+	return now < _shake_end_msec
 
 
 func _get_valid_direction(direction: Vector2) -> Vector2:

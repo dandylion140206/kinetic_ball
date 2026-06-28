@@ -1,4 +1,4 @@
-class_name BallMovementStats
+class_name BallSteeringStats
 extends Resource
 
 @export_range(1000, 10000, 100) var target_speed: int = 5500
