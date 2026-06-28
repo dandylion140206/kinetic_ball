@@ -5,12 +5,12 @@
 [ext_resource type="Resource" uid="uid://dttotehilb1vj" path="res://ball/default_ball_steering_stats.tres" id="2_vf1tv"]
 [ext_resource type="Script" uid="uid://6gsix3nqnew8" path="res://ball/ball_steering.gd" id="3_ktgx5"]
 [ext_resource type="Script" uid="uid://b8ouhsu7quywx" path="res://ball/ball_motion.gd" id="4_w6tmd"]
-[ext_resource type="Script" uid="uid://yivvirrfwbk4" path="res://ball/boost.gd" id="5_0p2w7"]
+[ext_resource type="Script" uid="uid://yivvirrfwbk4" path="res://ball/ball_boost.gd" id="5_0p2w7"]
 [ext_resource type="Script" uid="uid://bqueh340e20pu" path="res://ball/ball_input_controller.gd" id="5_melhi"]
 [ext_resource type="Script" uid="uid://yy0srp34g4cl" path="res://components/damage/damage_dealer.gd" id="6_r541t"]
 [ext_resource type="Script" uid="uid://ugts0151vg83" path="res://components/audio/one_shot_sound_player_2d.gd" id="7_melhi"]
 [ext_resource type="AudioStream" uid="uid://dpai2b5xgyi41" path="res://assets/sfx/ブースト/DSGNMisc_HIT-Synth Hit_HY_PC-001.wav" id="7_pshbt"]
-[ext_resource type="Script" uid="uid://dr1nv0nx5kpnf" path="res://ball/boost_controller.gd" id="7_rfhn3"]
+[ext_resource type="Script" uid="uid://dr1nv0nx5kpnf" path="res://ball/ball_boost_controller.gd" id="7_rfhn3"]
 [ext_resource type="Script" uid="uid://c0e4r7c3qcn4n" path="res://ball/ball_collision_handler.gd" id="8_orjm5"]
 [ext_resource type="Script" uid="uid://dpckb1ftogkt5" path="res://hit_reaction/hit_stop_receiver.gd" id="9_vf1tv"]
 
@@ -27,16 +27,16 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=626301878]
 shape = SubResource("CircleShape2D_ktgx5")
 
-[node name="BallVisual" type="Node2D" parent="." unique_id=1145665496]
+[node name="Visual" type="Node2D" parent="." unique_id=1145665496]
 script = ExtResource("2_41u45")
 
-[node name="BallMotion" type="Node" parent="." unique_id=1936661265]
+[node name="Motion" type="Node" parent="." unique_id=1936661265]
 script = ExtResource("4_w6tmd")
 
-[node name="BallSteering" type="Node" parent="." unique_id=1298670590]
+[node name="Steering" type="Node" parent="." unique_id=1298670590]
 script = ExtResource("3_ktgx5")
 
-[node name="BallInputController" type="Node" parent="." unique_id=724754623]
+[node name="InputController" type="Node" parent="." unique_id=724754623]
 script = ExtResource("5_melhi")
 
 [node name="BoostController" type="Node" parent="." unique_id=1911185644]
@@ -48,12 +48,12 @@ script = ExtResource("5_0p2w7")
 [node name="CooldownTimer" type="Timer" parent="BoostController/Boost" unique_id=495570790]
 one_shot = true
 
-[node name="BoostSoundPlayer" type="Node" parent="BoostController/Boost" unique_id=931417895]
+[node name="SoundPlayer" type="Node" parent="BoostController/Boost" unique_id=931417895]
 script = ExtResource("7_melhi")
 sound = ExtResource("7_pshbt")
 volume_db = -6.0
 
-[node name="BallCollisionHandler" type="Node" parent="." unique_id=779510675]
+[node name="CollisionHandler" type="Node" parent="." unique_id=779510675]
 script = ExtResource("8_orjm5")
 
 [node name="HitStopReceiver" type="Node" parent="." unique_id=191537168]

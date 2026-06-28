@@ -16,13 +16,13 @@ signal hit_confirmed(
 
 @export var steering_stats: BallSteeringStats
 
-@onready var input_controller: BallInputController = $BallInputController
-@onready var steering: BallSteering = $BallSteering
-@onready var motion: BallMotion = $BallMotion
-@onready var boost_controller: BoostController = $BoostController
+@onready var input_controller: BallInputController = $InputController
+@onready var steering: BallSteering = $Steering
+@onready var motion: BallMotion = $Motion
+@onready var boost_controller: BallBoostController = $BoostController
 @onready var damage_dealer: DamageDealer = $DamageDealer
 @onready var hit_stop: HitStopReceiver = $HitStopReceiver
-@onready var collision_handler: BallCollisionHandler = $BallCollisionHandler
+@onready var collision_handler: BallCollisionHandler = $CollisionHandler
 
 
 func _ready() -> void:

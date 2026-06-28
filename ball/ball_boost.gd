@@ -1,4 +1,4 @@
-class_name Boost
+class_name BallBoost
 extends Node
 
 @export_range(0, 5000, 100) var impulse_power: int = 1400
@@ -8,7 +8,7 @@ extends Node
 var _is_on_cooldown: bool = false
 
 @onready var cooldown_timer: Timer = $CooldownTimer
-@onready var boost_sound_player: OneShotSoundPlayer2D = $BoostSoundPlayer
+@onready var boost_sound_player: OneShotSoundPlayer2D = $SoundPlayer
 @onready var sound_origin: Node2D = get_node_or_null(sound_origin_path)
 
 
@@ -17,7 +17,7 @@ func _ready() -> void:
 	cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
 
 	if sound_origin == null:
-		push_warning("Boost: sound_origin is not assigned.")
+		push_warning("BallBoost: sound_origin is not assigned.")
 
 
 func try_activate(current_velocity: Vector2) -> Vector2:
